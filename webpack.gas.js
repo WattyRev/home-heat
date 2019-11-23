@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 var path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry:{
-      lib:'./src/lib.js'
+      lib:'./src/index.js'
   },
   output:
   {
