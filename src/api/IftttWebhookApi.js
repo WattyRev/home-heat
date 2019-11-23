@@ -18,7 +18,9 @@ export class CompetitionApi {
      * @param  {String} event the name of the event
      * @return {String}       The path name to be hit
      */
-    getEventPath = event => `/${event}/with/key/${iftttWebhookKey}`;
+    getEventPath(event) {
+        return `/${event}/with/key/${iftttWebhookKey}`;
+    }
 
     /**
      * The base url for all API requests
