@@ -31,7 +31,7 @@ export class CompetitionApi {
      * @return {Promise}
      */
     async triggerEvent(event) {
-        const path = this.getEventPath(event.get('name'));
+        const path = this.getEventPath(event.name);
         await this.axiosInstance.get(path);
     }
 }

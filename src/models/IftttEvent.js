@@ -1,20 +1,10 @@
-import PropTypes from 'prop-types';
-import { computed, createModel } from 'manikin-model';
-import rooms from '../constants/rooms';
-import temperatures from '../constants/temperatures';
+export default class IftttEvent {
+    constructor(data) {
+        this.roomName = data.roomName;
+        this.temperature = data.temperature;
+    }
 
-const IftttEvent = createModel({
-    roomName: null,
-    temperature: null,
-    name: computed(function() {
-        return `set_${this.get('roomName')}_temp_${this.get('temperature')}`;
-    }),
-});
-
-IftttEvent.prototype.propTypes = {
-    roomName: PropTypes.oneOf(rooms).isRequired,
-    temperature: PropTypes.oneOf(temperatures).isRequired,
-    name: PropTypes.string,
-};
-
-export default IftttEvent;
+    get name() {
+        return `set_${this.roomName}_temp_${this.temperature}`;
+    }
+}
