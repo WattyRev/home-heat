@@ -1,4 +1,4 @@
-import axios from 'axios';
+import UrlFetchApp from '../util/UrlFetchApp';
 import { iftttWebhookKey } from '../env';
 
 export default class IftttWebhookApi {
@@ -8,12 +8,32 @@ export default class IftttWebhookApi {
              * The base url for all API requests
              */
             baseURL: 'https://maker.ifttt.com/trigger',
-            headers: {
-                Accept: 'application/json',
+            options: {
+                headers: {
+                    Accept: 'application/json',
+                },
             },
         };
+    }
 
-        this.axiosInstance = axios.create(this.config);
+    fetch(path, options) {
+        return UrlFetchApp.fetch(`${this.config.baseURL}${path}`, {
+            ...this.config.options,
+            ...options,
+        });
+    }
+
+    get(path, options) {
+        return this.fetch(path, options);
+    }
+
+    post(path, payload, options) {
+        return this.fetch(path, {
+            method: 'post',
+            contentType: payload ? 'application/json' : undefined,
+            payload: payload ? JSON.stringify(payload) : undefined,
+            ...options,
+        });
     }
 
     /**
@@ -28,10 +48,10 @@ export default class IftttWebhookApi {
     /**
      * Trigger an IFTTT webhook event.
      * @param  {IftttEvent} event the Event to trigger
-     * @return {Promise}
      */
-    async triggerEvent(event) {
+    triggerEvent(event) {
         const path = this.getEventPath(event.name);
-        await this.axiosInstance.get(path);
+        return path;
+        // return this.get(path);
     }
 }
