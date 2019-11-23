@@ -7,7 +7,23 @@
 /**
  * Handler for GET requests to the App Script
  */
-function doGet() {
-    const output = AppLib.getTest();
+function doGet(e) {
+    const output = AppLib.onGet(e);
+    return ContentService.createTextOutput(output);
+}
+
+/**
+ * Handler for POST requests to the App Script
+ */
+function doPost(e) {
+    const output = AppLib.onPost(e);
+    return ContentService.createTextOutput(output);
+}
+
+/**
+ * Handler for timer events dispatched by Google Scripts
+ */
+function doTimedExecution(e) {
+    const output = AppLib.onTimedExecution(e);
     return ContentService.createTextOutput(output);
 }
