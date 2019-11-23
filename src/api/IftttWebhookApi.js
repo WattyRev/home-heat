@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { iftttWebhookKey } from '../env';
 
-export class CompetitionApi {
+export default class IftttWebhookApi {
     constructor() {
         this.config = {
             /**
