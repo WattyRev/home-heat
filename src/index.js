@@ -1,17 +1,17 @@
 import GetRequest from './models/GetRequest';
 import IftttEvent from './models/IftttEvent';
-import IftttWebhookApi from './api/IftttWebhookApi';
+import api from './api/IftttWebhookApi';
 
 function onGet(e) {
     const request = new GetRequest(e);
 
     if (request.action === 'setTemp') {
         const event = new IftttEvent({
-            room: request.room,
+            roomName: request.roomName,
             temperature: request.temperature,
         });
-        IftttWebhookApi.triggerEvent(event);
-        return `Setting ${request.room} to ${request.temperature} temperature.`;
+        api.triggerEvent(event);
+        return `Setting ${request.roomName} to ${request.temperature} temperature.`;
     }
     return 'test';
 }

@@ -1,7 +1,7 @@
 export default class GetRequest {
     constructor(requestData) {
         this.action = requestData.parameter.action;
-        this.room = requestData.parameter.room;
+        this.roomName = requestData.parameter.roomName;
         this.temperature = requestData.parameter.temperature;
     }
 }
