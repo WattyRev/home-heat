@@ -4,7 +4,10 @@ import { iftttWebhookKey } from '../env';
 export class CompetitionApi {
     constructor() {
         this.config = {
-            baseURL: this.baseUrl,
+            /**
+             * The base url for all API requests
+             */
+            baseURL: 'https://maker.ifttt.com/trigger',
             headers: {
                 Accept: 'application/json',
             },
@@ -21,24 +24,6 @@ export class CompetitionApi {
     getEventPath(event) {
         return `/${event}/with/key/${iftttWebhookKey}`;
     }
-
-    /**
-     * The base url for all API requests
-     * @type {String}
-     */
-    baseUrl = 'https://maker.ifttt.com/trigger';
-
-    /**
-     * The axios configuration.
-     * @type {Object}
-     */
-    config = {};
-
-    /**
-     * The axios instance.
-     * @type {Axios}
-     */
-    axiosInstance = null;
 
     /**
      * Trigger an IFTTT webhook event.
