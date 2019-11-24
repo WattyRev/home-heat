@@ -1,5 +1,5 @@
 import MockDate from 'mockdate';
-import { getSchedulesByRoomName } from '../../globals/Spreadsheet';
+import spreadsheetApi from '../../api/SpreadsheetApi';
 import setTemp from '../setTemp';
 import resumeSchedule from '../resumeSchedule';
 import {
@@ -9,11 +9,11 @@ import {
 } from '../../../testUtils/sheet';
 
 jest.mock('../setTemp');
-jest.mock('../../globals/Spreadsheet');
+jest.mock('../../api/SpreadsheetApi');
 
 describe('resumeShedule', () => {
     beforeEach(() => {
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('', '', '', '', '1899-12-30T10:00:00.000Z', 'away'),
@@ -45,7 +45,7 @@ describe('resumeShedule', () => {
     });
     it('does nothing if no event is scheduled', () => {
         expect.assertions(1);
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet(),
         });
         resumeSchedule('office');

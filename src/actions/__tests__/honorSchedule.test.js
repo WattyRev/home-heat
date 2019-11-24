@@ -1,5 +1,5 @@
 import MockDate from 'mockdate';
-import { getSchedulesByRoomName, getStatus } from '../../globals/Spreadsheet';
+import spreadsheetApi from '../../api/SpreadsheetApi';
 import honorSchedule from '../honorSchedule';
 import {
     createMockScheduleSheet,
@@ -7,7 +7,7 @@ import {
     createScheduleRow,
 } from '../../../testUtils/sheet';
 
-jest.mock('../../globals/Spreadsheet');
+jest.mock('../../api/SpreadsheetApi');
 jest.mock('../../util/log');
 jest.mock('../setTemp');
 
@@ -15,7 +15,7 @@ describe('honorSchedule', () => {
     beforeEach(() => {
         // Mock current time to Sunday 10:00 AM
         MockDate.set('2019-11-24T10:00:00.000Z');
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'idle'),
@@ -46,16 +46,12 @@ describe('honorSchedule', () => {
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
             ]),
         });
-        getStatus.mockReturnValue({
-            isAway: false,
-            isVacation: false,
-            setAway: jest.fn(),
-            setVacation: jest.fn(),
-        });
+        spreadsheetApi.getIsAway.mockReturnValue(false);
+        spreadsheetApi.getIsVacation.mockReturnValue(false);
     });
     it('does not take any action if no events line up', () => {
         expect.assertions(1);
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet(),
         });
         const response = honorSchedule();
@@ -78,23 +74,15 @@ describe('honorSchedule', () => {
     });
     it('does not take action if vacation status is set', () => {
         expect.assertions(1);
-        getStatus.mockReturnValue({
-            isAway: false,
-            isVacation: true,
-            setAway: jest.fn(),
-            setVacation: jest.fn(),
-        });
+        spreadsheetApi.getIsAway.mockReturnValue(false);
+        spreadsheetApi.getIsVacation.mockReturnValue(true);
         const response = honorSchedule();
         expect(response).toEqual('No actions to take at this time.');
     });
     it('does not take action on away rooms if away status is set', () => {
         expect.assertions(1);
-        getStatus.mockReturnValue({
-            isAway: true,
-            isVacation: false,
-            setAway: jest.fn(),
-            setVacation: jest.fn(),
-        });
+        spreadsheetApi.getIsAway.mockReturnValue(true);
+        spreadsheetApi.getIsVacation.mockReturnValue(false);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
@@ -109,7 +97,7 @@ describe('honorSchedule', () => {
         expect.assertions(1);
         // Mock current time to Sunday 9:56 AM
         MockDate.set('2019-11-24T09:56:00.000Z');
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
@@ -127,7 +115,7 @@ describe('honorSchedule', () => {
         expect.assertions(1);
         // Mock current time to Sunday 9:54 AM
         MockDate.set('2019-11-24T09:54:00.000Z');
-        getSchedulesByRoomName.mockReturnValue({
+        spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
@@ -143,7 +131,7 @@ describe('honorSchedule', () => {
     });
     describe('Days', () => {
         beforeEach(() => {
-            getSchedulesByRoomName.mockReturnValue({
+            spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
                 office: createMockScheduleSheet([
                     ...getBaseScheduleValues(),
                     [

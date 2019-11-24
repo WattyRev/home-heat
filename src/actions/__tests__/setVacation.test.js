@@ -1,30 +1,20 @@
-import { getStatus } from '../../globals/Spreadsheet';
+import spreadsheetApi from '../../api/SpreadsheetApi';
 import rooms from '../../constants/rooms';
 import setTemp from '../setTemp';
 import resumeSchedule from '../resumeSchedule';
 import setVacation from '../setVacation';
 
-jest.mock('../../globals/Spreadsheet');
+jest.mock('../../api/SpreadsheetApi');
 jest.mock('../setTemp');
 jest.mock('../resumeSchedule');
 jest.mock('../../util/log');
 
 describe('setVacation', () => {
-    let mockSetVacation;
-    let mockSetAway;
-    beforeEach(() => {
-        mockSetVacation = jest.fn();
-        mockSetAway = jest.fn();
-        getStatus.mockReturnValue({
-            setAway: mockSetAway,
-            setVacation: mockSetVacation,
-        });
-    });
     describe('setting to true', () => {
         it('sets vacation status to true', () => {
             expect.assertions(1);
             setVacation(true);
-            expect(mockSetVacation).toHaveBeenCalledWith(true);
+            expect(spreadsheetApi.setIsVacation).toHaveBeenCalledWith(true);
         });
         it('sets each room to away temperature', () => {
             expect.assertions(rooms.length);
@@ -38,12 +28,12 @@ describe('setVacation', () => {
         it('sets away to false', () => {
             expect.assertions(1);
             setVacation(false);
-            expect(mockSetAway).toHaveBeenCalledWith(false);
+            expect(spreadsheetApi.setIsAway).toHaveBeenCalledWith(false);
         });
         it('sets vacation to false', () => {
             expect.assertions(1);
             setVacation(false);
-            expect(mockSetVacation).toHaveBeenCalledWith(false);
+            expect(spreadsheetApi.setIsVacation).toHaveBeenCalledWith(false);
         });
         it('resumes the schedule for every room', () => {
             expect.assertions(rooms.length);

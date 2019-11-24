@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getLogsSheet } from '../globals/Spreadsheet';
+import spreadsheetApi from '../api/SpreadsheetApi';
 
 const MAX_LOG_COLUMNS = 10;
 const MAX_LOG_ROWS = 400;
@@ -10,7 +10,7 @@ const MAX_LOG_ROWS = 400;
  * @param {String} message The message to be logged
  */
 export default function log(...message) {
-    const sheet = getLogsSheet();
+    const sheet = spreadsheetApi.getLogsSheet();
     const newEntry = formatMessage(...message);
 
     const logRange = sheet.getRange(1, 1, MAX_LOG_ROWS, MAX_LOG_COLUMNS);

@@ -1,11 +1,11 @@
 import moment from 'moment';
-import { getSchedulesByRoomName } from '../globals/Spreadsheet';
+import spreadsheetApi from '../api/SpreadsheetApi';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
 import setTemp from './setTemp';
 
 export default function resumeSchedule(roomName) {
     // Get the schedule
-    const schedule = getSchedulesByRoomName()[roomName];
+    const schedule = spreadsheetApi.getSchedulesByRoomName()[roomName];
     const mostRecentEvent = getMostRecentEvent(schedule);
     if (mostRecentEvent) {
         setTemp(roomName, mostRecentEvent[1]);

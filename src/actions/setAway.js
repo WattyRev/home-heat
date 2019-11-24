@@ -1,4 +1,4 @@
-import { getStatus } from '../globals/Spreadsheet';
+import spreadsheetApi from '../api/SpreadsheetApi';
 import { awayRooms } from '../constants/rooms';
 import setTemp from './setTemp';
 import log from '../util/log';
@@ -6,7 +6,7 @@ import log from '../util/log';
 export default function setAway(isAway) {
     // If setting away to true, set all relevant rooms to away temperature
     if (isAway) {
-        getStatus().setAway(true);
+        spreadsheetApi.setIsAway(true);
         log('Leaving home');
         awayRooms.forEach(roomName => {
             setTemp(roomName, 'away');

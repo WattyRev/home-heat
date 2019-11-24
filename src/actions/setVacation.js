@@ -1,16 +1,14 @@
-import { getStatus } from '../globals/Spreadsheet';
+import spreadsheetApi from '../api/SpreadsheetApi';
 import rooms from '../constants/rooms';
 import setTemp from './setTemp';
 import resumeSchedule from './resumeSchedule';
 import log from '../util/log';
 
 export default function setVacation(isVacation) {
-    const status = getStatus();
-
     // If setting away to true, set all relevant rooms to away temperature
     if (isVacation) {
         log('Going on vacation');
-        status.setVacation(true);
+        spreadsheetApi.setIsVacation(true);
         rooms.forEach(roomName => {
             setTemp(roomName, 'away');
         });
@@ -18,8 +16,8 @@ export default function setVacation(isVacation) {
     }
 
     // Set both away and vacation to false since I'm obviously neither away nor on vacation
-    status.setAway(false);
-    status.setVacation(false);
+    spreadsheetApi.setIsAway(false);
+    spreadsheetApi.setIsVacation(false);
     log('Returning home');
     rooms.forEach(roomName => {
         resumeSchedule(roomName);
