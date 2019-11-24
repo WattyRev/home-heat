@@ -2,7 +2,7 @@ import moment from 'moment';
 import spreadsheetApi from '../api/SpreadsheetApi';
 
 const MAX_LOG_COLUMNS = 10;
-const MAX_LOG_ROWS = 400;
+export const MAX_LOG_ROWS = 400;
 
 /**
  * Logs the message into a google spreadsheet so it can be viewed later.
@@ -22,7 +22,7 @@ export default function log(...message) {
     entries.splice(-1, 1);
 
     // Save the log
-    logRange.setValues(entries);
+    return logRange.setValues(entries);
 }
 
 /**

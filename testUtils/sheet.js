@@ -108,6 +108,13 @@ export function createMockSheet(data) {
                     updatedData[rowStart - 1][columnStart - 1] = value;
                     return createMockSheet(updatedData);
                 },
+                setValues(values) {
+                    const updatedData = data;
+                    values.forEach((valueRow, rowIndex) => {
+                        updatedData[rowStart - 1 + rowIndex] = valueRow;
+                    });
+                    return createMockSheet(updatedData);
+                },
             };
         },
     };
