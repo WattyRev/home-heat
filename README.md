@@ -2,6 +2,7 @@
 A web app that manages the heating of my house.
 
 **Why**
+
 I have 2 different heating systems in my house: Mysa for in-wall forced air heating, and Sensibo for a Heating/AC system.
 
 Mysa has a geo-fencing feature, but I found it to be unreliable. Even if it was reliable, it wouldn't be able to change my Sensibo.
