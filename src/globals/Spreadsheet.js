@@ -30,3 +30,24 @@ export const schedulesByRoomName = {
     guest_room: spreadsheet.getSheetByName('Guest Room Schedule'),
     guest_bathroom: spreadsheet.getSheetByName('Guest Bathroom Schedule'),
 };
+
+class Status {
+    constructor() {
+        const statusSheet = spreadsheet.getSheetByName('Status');
+        this.awayCell = statusSheet.getRange(1, 2);
+        this.isAway = this.awayCell.getValue();
+        this.vacationCell = statusSheet.getRange(2, 2);
+        this.isVacation = this.vacationCell.getValue();
+    }
+
+    setAway(isAway) {
+        this.awayCell.setValue(isAway);
+        this.isAway = isAway;
+    }
+
+    setVacation(isVacation) {
+        this.vacationCell.setValue(isVacation);
+        this.isVacation = isVacation;
+    }
+}
+export const status = new Status();

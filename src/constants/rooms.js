@@ -7,5 +7,9 @@ const rooms = [
     'guest_room',
     'guest_bathroom',
 ];
-
 export default rooms;
+
+/**
+ * Rooms that have disabled schedules when away.
+ */
+export const awayRooms = ['bedroom', 'office', 'bathroom'];

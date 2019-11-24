@@ -24,6 +24,5 @@ function doPost(e) {
  * Handler for timer events dispatched by Google Scripts
  */
 function doTimedExecution(e) {
-    const output = AppLib.onTimedExecution(e);
-    return ContentService.createTextOutput(output);
+    AppLib.onTimedExecution(e);
 }

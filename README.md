@@ -35,3 +35,25 @@ Tests the server's time to understand how scheduling might work
 https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule
 
 Check the schedule and run any necessary processes based on the current time
+
+### Away
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
+
+with payload
+```json
+{
+    "passcode": "secretString",
+    "away": "true"
+}
+```
+
+### Vacation
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=vacation`
+
+with payload
+```json
+{
+    "passcode": "secretString",
+    "vacation": "true"
+}
+```
