@@ -1,5 +1,5 @@
-/* global SpreadsheetApp */
 import moment from 'moment';
+import { getLogsSheet } from '../globals/Spreadsheet';
 
 const MAX_LOG_COLUMNS = 10;
 const MAX_LOG_ROWS = 400;
@@ -10,10 +10,7 @@ const MAX_LOG_ROWS = 400;
  * @param {String} message The message to be logged
  */
 export default function log(...message) {
-    const spreadsheet = SpreadsheetApp.openByUrl(
-        'https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0'
-    );
-    const sheet = spreadsheet.getSheetByName('Logs');
+    const sheet = getLogsSheet();
     const newEntry = formatMessage(...message);
 
     const logRange = sheet.getRange(1, 1, MAX_LOG_ROWS, MAX_LOG_COLUMNS);

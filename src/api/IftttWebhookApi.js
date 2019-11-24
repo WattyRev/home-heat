@@ -1,4 +1,4 @@
-import UrlFetchApp from '../globals/UrlFetchApp';
+import getUrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
 import { iftttWebhookKey } from '../env';
 
@@ -20,7 +20,7 @@ export class IftttWebhookApi {
     fetch(path, options = {}) {
         const url = `${this.config.baseURL}${path}`;
         log(`Making request to ${url} with method ${options.method || 'GET'}`);
-        return UrlFetchApp.fetch(url, {
+        return getUrlFetchApp().fetch(url, {
             ...this.config.options,
             ...options,
         });

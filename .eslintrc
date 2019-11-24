@@ -4,6 +4,7 @@
         "func-names": "off",
         "class-methods-use-this": "off",
         "radix": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "zillow/jest/prefer-strict-equal": "off"
     }
 }
