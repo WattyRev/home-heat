@@ -1,4 +1,3 @@
-import moment from 'moment';
 import honorSchedule from './actions/honorSchedule';
 import setAway from './actions/setAway';
 import setVacation from './actions/setVacation';
@@ -8,8 +7,6 @@ export default function route(request, method) {
         switch (request.action) {
             case 'honorSchedule':
                 return honorSchedule();
-            case 'testTime':
-                return moment().format();
             default:
                 return 'No route found';
         }
