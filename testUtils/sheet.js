@@ -47,7 +47,7 @@ export function createScheduleRow(...entries) {
     }
     return row;
 }
-export function createMockSheduleSheet(providedValues) {
+export function createMockScheduleSheet(providedValues) {
     let values = providedValues;
     if (!values) {
         values = [

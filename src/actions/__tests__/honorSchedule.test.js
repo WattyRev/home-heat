@@ -1,12 +1,8 @@
 import MockDate from 'mockdate';
-// import log from '../../util/log';
 import { getSchedulesByRoomName, getStatus } from '../../globals/Spreadsheet';
-// import { awayRooms } from '../../constants/rooms';
-// import setTemp from '../setTemp';
 import honorSchedule from '../honorSchedule';
-
 import {
-    createMockSheduleSheet,
+    createMockScheduleSheet,
     getBaseScheduleValues,
     createScheduleRow,
 } from '../../../testUtils/sheet';
@@ -20,32 +16,32 @@ describe('honorSchedule', () => {
         // Mock current time to Sunday 10:00 AM
         MockDate.set('2019-11-24T10:00:00.000Z');
         getSchedulesByRoomName.mockReturnValue({
-            office: createMockSheduleSheet([
+            office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'idle'),
             ]),
-            bedroom: createMockSheduleSheet([
+            bedroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'sleep'),
             ]),
-            bathroom: createMockSheduleSheet([
+            bathroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
             ]),
-            living_room: createMockSheduleSheet([
+            living_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T09:00:00.000Z', 'away'),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
             ]),
-            game_room: createMockSheduleSheet([
+            game_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'away'),
             ]),
-            guest_room: createMockSheduleSheet([
+            guest_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'sleep'),
             ]),
-            guest_bathroom: createMockSheduleSheet([
+            guest_bathroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
             ]),
@@ -60,7 +56,7 @@ describe('honorSchedule', () => {
     it('does not take any action if no events line up', () => {
         expect.assertions(1);
         getSchedulesByRoomName.mockReturnValue({
-            office: createMockSheduleSheet(),
+            office: createMockScheduleSheet(),
         });
         const response = honorSchedule();
         expect(response).toEqual('No actions to take at this time.');
@@ -114,7 +110,7 @@ describe('honorSchedule', () => {
         // Mock current time to Sunday 9:56 AM
         MockDate.set('2019-11-24T09:56:00.000Z');
         getSchedulesByRoomName.mockReturnValue({
-            office: createMockSheduleSheet([
+            office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
@@ -132,7 +128,7 @@ describe('honorSchedule', () => {
         // Mock current time to Sunday 9:54 AM
         MockDate.set('2019-11-24T09:54:00.000Z');
         getSchedulesByRoomName.mockReturnValue({
-            office: createMockSheduleSheet([
+            office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
                 createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
@@ -148,7 +144,7 @@ describe('honorSchedule', () => {
     describe('Days', () => {
         beforeEach(() => {
             getSchedulesByRoomName.mockReturnValue({
-                office: createMockSheduleSheet([
+                office: createMockScheduleSheet([
                     ...getBaseScheduleValues(),
                     [
                         '1899-12-30T10:00:00.000Z',

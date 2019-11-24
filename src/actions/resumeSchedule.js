@@ -7,7 +7,9 @@ export default function resumeSchedule(roomName) {
     // Get the schedule
     const schedule = getSchedulesByRoomName()[roomName];
     const mostRecentEvent = getMostRecentEvent(schedule);
-    setTemp(roomName, mostRecentEvent[1]);
+    if (mostRecentEvent) {
+        setTemp(roomName, mostRecentEvent[1]);
+    }
 }
 
 function getMostRecentEvent(schedule) {
@@ -20,6 +22,7 @@ function getMostRecentEvent(schedule) {
     );
 
     // Create an array of daily schedules sorted from today -> 6 days ago
+    // If today is wednesday, the array should end up [7, 5, 3, 1, 13, 11, 9]
     const dayIndexes = [1, 3, 5, 7, 9, 11, 13];
     dayIndexes.sort((indexA, indexB) => {
         const todayIndex = dayIndex * 2 + 1;
@@ -32,18 +35,26 @@ function getMostRecentEvent(schedule) {
         if (indexB === todayIndex) {
             return BaboveA;
         }
-        if (todayIndex - indexA > todayIndex - indexB) {
+        const diffA = todayIndex - indexA;
+        const diffB = todayIndex - indexB;
+        if (diffA < 0 && diffB >= 0) {
+            return BaboveA;
+        }
+        if (diffB < 0 && diffA >= 0) {
             return AaboveB;
         }
         if (todayIndex - indexA < todayIndex - indexB) {
+            return AaboveB;
+        }
+        if (todayIndex - indexA > todayIndex - indexB) {
             return BaboveA;
         }
         return AequalB;
     });
-    const daySchedules = dayIndexes.map(index => schedule.getRange(3, index, 20, 2));
     // Duplicate the current day at the end of the list so we can check for
     // events from a week ago at a later time than now.
-    daySchedules.push(daySchedules[0]);
+    dayIndexes.push(dayIndexes[0]);
+    const daySchedules = dayIndexes.map(index => schedule.getRange(3, index, 20, 2));
 
     // Find the most recent event that happened before now
     let relevantEvent = null;
@@ -68,7 +79,7 @@ function getMostRecentEvent(schedule) {
 
         // If the event is not today (first item in array), then set the latest
         // event and stop the loop.
-        if (index !== 0) {
+        if (index !== 0 && events[0]) {
             [relevantEvent] = events;
             return true;
         }
