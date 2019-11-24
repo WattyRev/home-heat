@@ -3,5 +3,6 @@
     "rules": {
         "func-names": "off",
         "class-methods-use-this": "off",
+        "radix": "off",
     }
 }

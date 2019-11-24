@@ -1,4 +1,4 @@
-import UrlFetchApp from '../util/UrlFetchApp';
+import UrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
 import { iftttWebhookKey } from '../env';
 
