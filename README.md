@@ -39,7 +39,8 @@ Architecture:
 ```
 
 ### App Script
-https://script.google.com/d/10rdOYPj5eix6kF7VkjrmR8LDWrHty8pLn0kW5yhmMm_A5pdr8S-RUWxR/edit?usp=drive_web
+https://script.google.com/d/10rdOYPj5eix6kF7VkjrmR8LDWrHty8pLn0kW5yhmMm_A5pdr8S-RUWxR/edit?usp=drive_web (No you can't have access. This link is for my benefit not yours.)
+
 The code in this repository drives the App Script.
 
 This maintains the logic for how to manage schedules, away/vacation status. It provides endpoints that can be hit from IFTTT to notify status changes, and it can make requests to IFTTT to manipulate thermostats.
@@ -74,7 +75,8 @@ with payload
 ```
 
 ### Google Sheets
-https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0
+https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0 (No you can't have access. This link is for my benefit not yours.)
+
 Since the App Script is just static code that gets run on a timer, it needs some way to store state (away/vacation).
 
 Google Sheets can provide that persistent storage for state and for logging. It also provides a relatively easy and robust way of managing schedules for each thermostat, so that scheduling configuration is stored here.
