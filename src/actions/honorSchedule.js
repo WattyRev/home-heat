@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { schedulesByRoomName, status } from '../globals/Spreadsheet';
+import spreadsheetApi from '../api/SpreadsheetApi';
 import { awayRooms } from '../constants/rooms';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
 import log from '../util/log';
@@ -36,7 +36,7 @@ export default function honorSchedule() {
     const message = actions.reduce(
         (builtMessage, action) =>
             `${builtMessage}* Set ${action.roomName} to ${action.temperature}\n`,
-        'Took the following actions: \n'
+        'Took the following actions:\n'
     );
     return message;
 }
@@ -51,12 +51,13 @@ export default function honorSchedule() {
  */
 export function determineActions(dayIndex, hours, minutes) {
     // During vacation, leave thermostats alone
-    if (status.isVacation) {
+    if (spreadsheetApi.getIsVacation()) {
         return [];
     }
+    const schedulesByRoomName = spreadsheetApi.getSchedulesByRoomName();
     const actions = Object.keys(schedulesByRoomName).reduce((accumulatedActions, roomName) => {
         // If this room is currently impacted by away status, don't do anything to it.
-        if (status.isAway && awayRooms.includes(roomName)) {
+        if (spreadsheetApi.getIsAway() && awayRooms.includes(roomName)) {
             return accumulatedActions;
         }
 

@@ -1,6 +1,6 @@
-import UrlFetchApp from '../globals/UrlFetchApp';
+import getUrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
-import { iftttWebhookKey } from '../env';
+import getEnv from '../env';
 
 export class IftttWebhookApi {
     constructor() {
@@ -20,7 +20,7 @@ export class IftttWebhookApi {
     fetch(path, options = {}) {
         const url = `${this.config.baseURL}${path}`;
         log(`Making request to ${url} with method ${options.method || 'GET'}`);
-        return UrlFetchApp.fetch(url, {
+        return getUrlFetchApp().fetch(url, {
             ...this.config.options,
             ...options,
         });
@@ -31,10 +31,15 @@ export class IftttWebhookApi {
     }
 
     post(path, payload, options = {}) {
-        return this.fetch(path, {
+        const config = {
             method: 'POST',
-            contentType: payload ? 'application/json' : undefined,
-            payload: payload ? JSON.stringify(payload) : undefined,
+        };
+        if (payload) {
+            config.contentType = 'application/json';
+            config.payload = JSON.stringify(payload);
+        }
+        return this.fetch(path, {
+            ...config,
             ...options,
         });
     }
@@ -45,6 +50,7 @@ export class IftttWebhookApi {
      * @return {String}       The path name to be hit
      */
     getEventPath(event) {
+        const { iftttWebhookKey } = getEnv();
         return `/${event}/with/key/${iftttWebhookKey}`;
     }
 

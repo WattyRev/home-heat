@@ -1,8 +1,8 @@
-/* global SpreadsheetApp */
 import moment from 'moment';
+import spreadsheetApi from '../api/SpreadsheetApi';
 
 const MAX_LOG_COLUMNS = 10;
-const MAX_LOG_ROWS = 400;
+export const MAX_LOG_ROWS = 400;
 
 /**
  * Logs the message into a google spreadsheet so it can be viewed later.
@@ -10,10 +10,7 @@ const MAX_LOG_ROWS = 400;
  * @param {String} message The message to be logged
  */
 export default function log(...message) {
-    const spreadsheet = SpreadsheetApp.openByUrl(
-        'https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0'
-    );
-    const sheet = spreadsheet.getSheetByName('Logs');
+    const sheet = spreadsheetApi.getLogsSheet();
     const newEntry = formatMessage(...message);
 
     const logRange = sheet.getRange(1, 1, MAX_LOG_ROWS, MAX_LOG_COLUMNS);
@@ -25,7 +22,7 @@ export default function log(...message) {
     entries.splice(-1, 1);
 
     // Save the log
-    logRange.setValues(entries);
+    return logRange.setValues(entries);
 }
 
 /**
