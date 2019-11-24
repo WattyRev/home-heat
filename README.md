@@ -1,7 +1,7 @@
 # home-heat
 A web app that manages the heating of my house.
 
-**Why**
+## Why
 
 I have 2 different heating systems in my house: Mysa for in-wall forced air heating, and Sensibo for a Heating/AC system.
 
@@ -9,37 +9,49 @@ Mysa has a geo-fencing feature, but I found it to be unreliable. Even if it was 
 
 So, I wanted to make my own system for thermostat scheduling that can control both Mysa and Sensibo, and which can also be manipulated using a 3rd party Geofencing (IFTTT).
 
-## Local Development
+## How
 
-Install dependencies for local development using:
+Architecture:
 ```
-npm ci
+       +-----+
+       |Timer|
+       +--+--+
+          |
+          | Run Schedule     +------------+                              +---------------+
+          +----------------->+            |     Persistent Storage       |               |
+                             | App Script +<---------------------------->+ Google Sheets |
+    +------------------------+            |     Get daily schedules      |               |
+    |    Set Thermostats     +-----^------+     Manage event logs        +---------------+
+    |                              |            Manage Vacation/Away State
+    |                              |
+    |      Notify Vacation/Away    |
++---v---+  status from geofence    |
+|       |  or Voice Command        |
+| IFTTT +--------------------------+
+|       |
++---^---+
+    |                     +------------------+
+    |                     |                  |
+    +---------------------+ Google Assistant |
+      Manually Trigger    |                  |
+      Vacation via Voice  +------------------+
+
 ```
 
-## Deployment
+### App Script
+https://script.google.com/d/10rdOYPj5eix6kF7VkjrmR8LDWrHty8pLn0kW5yhmMm_A5pdr8S-RUWxR/edit?usp=drive_web
+The code in this repository drives the App Script.
 
-1. Push code to Google by using:
-```
-npm run deploy
-```
+This maintains the logic for how to manage schedules, away/vacation status. It provides endpoints that can be hit from IFTTT to notify status changes, and it can make requests to IFTTT to manipulate thermostats.
 
-2. Publish the web-app from the script [here](https://script.google.com/d/10rdOYPj5eix6kF7VkjrmR8LDWrHty8pLn0kW5yhmMm_A5pdr8S-RUWxR/edit?usp=drive_web).
+The App Script creates these endpoints:
 
-    1. Select Publish -> Deploy as web app...
-    2. Set Project version to "New"
-    3. Set Who has access to the app to "Anyone, even anonymous"
-    4. Press "Update"
-
-## Web App
-
-The web app is accessible at https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec.
-
-### Honor Schedule
-https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule
+#### Honor Schedule
+`GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
 
 Check the schedule and run any necessary processes based on the current time
 
-### Away
+#### Away
 `POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
 
 with payload
@@ -50,7 +62,7 @@ with payload
 }
 ```
 
-### Vacation
+#### Vacation
 `POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=vacation`
 
 with payload
@@ -60,3 +72,14 @@ with payload
     "vacation": "true"
 }
 ```
+
+### Google Sheets
+https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0
+Since the App Script is just static code that gets run on a timer, it needs some way to store state (away/vacation).
+
+Google Sheets can provide that persistent storage for state and for logging. It also provides a relatively easy and robust way of managing schedules for each thermostat, so that scheduling configuration is stored here.
+
+### IFTTT
+http://ifttt.com
+
+IFTTT is used as the intermediary between 3rd party services (Mysa, Sensibo, and Google Assistant) and my script. Here I have applets set up to set the temperature of each thermostat, and to relay messages from the Google Assistant to my service. IFTTT also provides geofencing features which can drive additional functionality when I enter or leave my home.
