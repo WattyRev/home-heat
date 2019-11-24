@@ -13,6 +13,5 @@ export default function setAway(isAway) {
         });
         return 'See you later!';
     }
-
     throw new Error('setAway(false) is not currently supported. use setVacation(false) instead.');
 }
