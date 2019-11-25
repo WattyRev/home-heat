@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clasp": "clasp",
-    "build": "webpack --config webpack.gas.js ",
-    "deploy": "npm run build && cd dist && clasp push",
+    "build": "node hydrateSecrets.js && webpack --config webpack.gas.js",
+    "authenticate": "clasp login --creds creds.json",
+    "deploy": "cd dist && clasp push -f && cd ..",
     "test": "jest"
   },
   "eslintConfig": {
