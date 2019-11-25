@@ -46,8 +46,9 @@ describe('honorSchedule', () => {
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
             ]),
         });
-        spreadsheetApi.getIsAway.mockReturnValue(false);
-        spreadsheetApi.getIsVacation.mockReturnValue(false);
+        spreadsheetApi.getSpencerAway.mockReturnValue(false);
+        spreadsheetApi.getMichaelAway.mockReturnValue(false);
+        spreadsheetApi.getAllAway.mockReturnValue(false);
     });
     it('does not take any action if no events line up', () => {
         expect.assertions(1);
@@ -72,17 +73,17 @@ describe('honorSchedule', () => {
             '',
         ]);
     });
-    it('does not take action if vacation status is set', () => {
+    it('does not take action if everyone is away', () => {
         expect.assertions(1);
-        spreadsheetApi.getIsAway.mockReturnValue(false);
-        spreadsheetApi.getIsVacation.mockReturnValue(true);
+        spreadsheetApi.getAllAway.mockReturnValue(true);
         const response = honorSchedule();
         expect(response).toEqual('No actions to take at this time.');
     });
-    it('does not take action on away rooms if away status is set', () => {
+    it("does not take action on Spencer's rooms if he is away", () => {
         expect.assertions(1);
-        spreadsheetApi.getIsAway.mockReturnValue(true);
-        spreadsheetApi.getIsVacation.mockReturnValue(false);
+        spreadsheetApi.getSpencerAway.mockReturnValue(true);
+        spreadsheetApi.getMichaelAway.mockReturnValue(false);
+        spreadsheetApi.getAllAway.mockReturnValue(false);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
@@ -90,6 +91,22 @@ describe('honorSchedule', () => {
             '* Set game_room to away',
             '* Set guest_room to sleep',
             '* Set guest_bathroom to shower',
+            '',
+        ]);
+    });
+    it("does not take action on Michael's rooms if he is away", () => {
+        expect.assertions(1);
+        spreadsheetApi.getSpencerAway.mockReturnValue(false);
+        spreadsheetApi.getMichaelAway.mockReturnValue(true);
+        spreadsheetApi.getAllAway.mockReturnValue(false);
+        const response = honorSchedule();
+        expect(response.split('\n')).toEqual([
+            'Took the following actions:',
+            '* Set office to idle',
+            '* Set bedroom to sleep',
+            '* Set bathroom to shower',
+            '* Set living_room to comfort',
+            '* Set game_room to away',
             '',
         ]);
     });

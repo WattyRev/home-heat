@@ -53,10 +53,10 @@ Check the schedule and run any necessary processes based on the current time
 `GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
 
 
-#### Away
-Enable or disable Away state.
+#### Spencer Away
+Update Spencer's Away status.
 
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=spencerAway`
 
 with payload
 ```json
@@ -66,16 +66,16 @@ with payload
 }
 ```
 
-#### Vacation
-Enable or disable Vacation state.
+#### Michael Away
+Update Michael's Away status.
 
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=vacation`
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=michaelAway`
 
 with payload
 ```json
 {
     "passcode": "secretString",
-    "vacation": "true"
+    "away": "true"
 }
 ```
 

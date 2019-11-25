@@ -1,6 +1,5 @@
 import honorSchedule from './actions/honorSchedule';
 import setAway from './actions/setAway';
-import setVacation from './actions/setVacation';
 import resumeSchedules from './actions/resumeSchedules';
 
 export default function route(request, method) {
@@ -14,10 +13,10 @@ export default function route(request, method) {
     }
     if (method === 'post') {
         switch (request.action) {
-            case 'vacation':
-                return setVacation(request.payload.vacation === 'true');
-            case 'away':
-                return setAway(request.payload.away === 'true');
+            case 'spencerAway':
+                return setAway('spencer', request.payload.away === 'true');
+            case 'michaelAway':
+                return setAway('michael', request.payload.away === 'true');
             case 'redriveSchedule':
                 return resumeSchedules();
             default:
