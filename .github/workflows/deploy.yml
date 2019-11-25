@@ -11,17 +11,17 @@ jobs:
         steps:
             - uses: actions/checkout@v1
             - name: Use Node.js 10.x
-                uses: actions/setup-node@v1
-                with:
-                    node-version: 10.x
+              uses: actions/setup-node@v1
+              with:
+                node-version: 10.x
             - name: npm install, build, and deploy
-                run: |
-                    npm ci
-                    npm run build
-                    npm run authenticate
-                    npm run deploy
-                env:
-                    CI: true
-                    IFTTT_WEBHOOK_KEY: ${{ secrets.iftttWebhookKey }}
-                    PASSCODE: ${{ secrets.passcode }}
-                    APP_SCRIPT_CREDS: ${{ secrets.appScriptCreds }}
+              run: |
+                npm ci
+                npm run build
+                npm run authenticate
+                npm run deploy
+              env:
+                CI: true
+                IFTTT_WEBHOOK_KEY: ${{ secrets.iftttWebhookKey }}
+                PASSCODE: ${{ secrets.passcode }}
+                APP_SCRIPT_CREDS: ${{ secrets.appScriptCreds }}
