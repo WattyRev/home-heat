@@ -12,11 +12,11 @@ export {
     passcode
 };
 `;
-    fs.writeSync('./src/_env.js', fileContents);
+    fs.writeFileSync('./src/_env.js', fileContents);
 }
 
 if (fs.existsSync('./creds.json')) {
     console.log('creds.json already exists. Leaving it alone');
 } else if (process.env.APP_SCRIPT_CREDS) {
-    fs.writeSync('./creds.json', process.env.APP_SCRIPT_CREDS);
+    fs.writeFileSync('./creds.json', process.env.APP_SCRIPT_CREDS);
 }
