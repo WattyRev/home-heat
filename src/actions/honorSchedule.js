@@ -1,6 +1,6 @@
 import moment from 'moment';
 import spreadsheetApi from '../api/SpreadsheetApi';
-import { awayRooms } from '../constants/rooms';
+import { spencerRooms, michaelRooms } from '../constants/rooms';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
 import log from '../util/log';
 import setTemp from './setTemp';
@@ -50,14 +50,17 @@ export default function honorSchedule() {
  *                           room name and temperature.
  */
 export function determineActions(dayIndex, hours, minutes) {
-    // During vacation, leave thermostats alone
-    if (spreadsheetApi.getIsVacation()) {
+    // If everyone is away, leave thermostats alone
+    if (spreadsheetApi.getAllAway()) {
         return [];
     }
     const schedulesByRoomName = spreadsheetApi.getSchedulesByRoomName();
     const actions = Object.keys(schedulesByRoomName).reduce((accumulatedActions, roomName) => {
         // If this room is currently impacted by away status, don't do anything to it.
-        if (spreadsheetApi.getIsAway() && awayRooms.includes(roomName)) {
+        if (spreadsheetApi.getSpencerAway() && spencerRooms.includes(roomName)) {
+            return accumulatedActions;
+        }
+        if (spreadsheetApi.getMichaelAway() && michaelRooms.includes(roomName)) {
             return accumulatedActions;
         }
 

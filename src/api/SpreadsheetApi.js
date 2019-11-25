@@ -18,32 +18,36 @@ class SpreadsheetApi {
         };
     }
 
-    getIsAway() {
+    getSpencerAway() {
         const spreadsheet = getSpreadsheet();
         const statusSheet = spreadsheet.getSheetByName('Status');
-        const awayCell = statusSheet.getRange(1, 2);
+        const awayCell = statusSheet.getRange(3, 2);
         return awayCell.getValue();
     }
 
-    setIsAway(value) {
+    setSpencerAway(value) {
         const spreadsheet = getSpreadsheet();
         const statusSheet = spreadsheet.getSheetByName('Status');
-        const awayCell = statusSheet.getRange(1, 2);
+        const awayCell = statusSheet.getRange(3, 2);
         return awayCell.setValue(value);
     }
 
-    getIsVacation() {
+    getMichaelAway() {
         const spreadsheet = getSpreadsheet();
         const statusSheet = spreadsheet.getSheetByName('Status');
-        const vacationCell = statusSheet.getRange(2, 2);
-        return vacationCell.getValue();
+        const awayCell = statusSheet.getRange(4, 2);
+        return awayCell.getValue();
     }
 
-    setIsVacation(value) {
+    setMichaelAway(value) {
         const spreadsheet = getSpreadsheet();
         const statusSheet = spreadsheet.getSheetByName('Status');
-        const vacationCell = statusSheet.getRange(2, 2);
-        return vacationCell.setValue(value);
+        const awayCell = statusSheet.getRange(4, 2);
+        return awayCell.setValue(value);
+    }
+
+    getAllAway() {
+        return this.getSpencerAway() && this.getMichaelAway();
     }
 }
 

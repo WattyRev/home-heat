@@ -30,7 +30,7 @@ describe('SpreadsheetApi', () => {
             ]);
         });
     });
-    describe('getIsAway', () => {
+    describe('getSpencerAway', () => {
         it('gets the stored away value', () => {
             expect.assertions(1);
             getSpreadsheet.mockReturnValue(
@@ -38,14 +38,16 @@ describe('SpreadsheetApi', () => {
                     Status: [
                         ['Away', true],
                         ['Vacation', false],
+                        ['Spencer Away', true],
+                        ['Michael Away', false],
                     ],
                 })
             );
-            const response = api.getIsAway();
+            const response = api.getSpencerAway();
             expect(response).toEqual(true);
         });
     });
-    describe('setIsAway', () => {
+    describe('setSpencerAway', () => {
         it('sets the stored away value', () => {
             expect.assertions(1);
             getSpreadsheet.mockReturnValue(
@@ -53,41 +55,47 @@ describe('SpreadsheetApi', () => {
                     Status: [
                         ['Away', true],
                         ['Vacation', false],
+                        ['Spencer Away', true],
+                        ['Michael Away', false],
                     ],
                 })
             );
-            const response = api.setIsAway(false);
-            expect(response.getRange(1, 2).getValue()).toEqual(false);
+            const response = api.setSpencerAway(false);
+            expect(response.getRange(3, 2).getValue()).toEqual(false);
         });
     });
-    describe('getIsVacation', () => {
-        it('gets the stored vacation value', () => {
+    describe('getMichaelAway', () => {
+        it('gets the stored away value', () => {
             expect.assertions(1);
             getSpreadsheet.mockReturnValue(
                 createMockSpreadsheet({
                     Status: [
                         ['Away', true],
                         ['Vacation', false],
+                        ['Spencer Away', true],
+                        ['Michael Away', false],
                     ],
                 })
             );
-            const response = api.getIsVacation();
+            const response = api.getMichaelAway();
             expect(response).toEqual(false);
         });
     });
-    describe('setIsVacation', () => {
-        it('sets the stored vacation value', () => {
+    describe('setMichaelAway', () => {
+        it('sets the stored away value', () => {
             expect.assertions(1);
             getSpreadsheet.mockReturnValue(
                 createMockSpreadsheet({
                     Status: [
                         ['Away', true],
                         ['Vacation', false],
+                        ['Spencer Away', true],
+                        ['Michael Away', false],
                     ],
                 })
             );
-            const response = api.setIsVacation(true);
-            expect(response.getRange(2, 2).getValue()).toEqual(true);
+            const response = api.setMichaelAway(true);
+            expect(response.getRange(4, 2).getValue()).toEqual(true);
         });
     });
 });
