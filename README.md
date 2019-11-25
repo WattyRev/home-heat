@@ -48,11 +48,14 @@ This maintains the logic for how to manage schedules, away/vacation status. It p
 The App Script creates these endpoints:
 
 #### Honor Schedule
-`GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
-
 Check the schedule and run any necessary processes based on the current time
 
+`GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
+
+
 #### Away
+Enable or disable Away state.
+
 `POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
 
 with payload
@@ -64,6 +67,8 @@ with payload
 ```
 
 #### Vacation
+Enable or disable Vacation state.
+
 `POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=vacation`
 
 with payload
@@ -71,6 +76,18 @@ with payload
 {
     "passcode": "secretString",
     "vacation": "true"
+}
+```
+
+#### Redrive Schedule
+Make all thermostats resume their schedules.
+
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=redriveSchedule`
+
+with payload
+```json
+{
+    "passcode": "secretString"
 }
 ```
 

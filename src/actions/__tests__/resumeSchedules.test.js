@@ -1,7 +1,7 @@
 import MockDate from 'mockdate';
 import spreadsheetApi from '../../api/SpreadsheetApi';
 import setTemp from '../setTemp';
-import resumeSchedule from '../resumeSchedule';
+import { resumeSchedule } from '../resumeSchedules';
 import {
     createMockScheduleSheet,
     getBaseScheduleValues,

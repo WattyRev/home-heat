@@ -1,7 +1,7 @@
 import spreadsheetApi from '../api/SpreadsheetApi';
 import rooms from '../constants/rooms';
 import setTemp from './setTemp';
-import resumeSchedule from './resumeSchedule';
+import resumeSchedules from './resumeSchedules';
 import log from '../util/log';
 
 export default function setVacation(isVacation) {
@@ -18,9 +18,6 @@ export default function setVacation(isVacation) {
     // Set both away and vacation to false since I'm obviously neither away nor on vacation
     spreadsheetApi.setIsAway(false);
     spreadsheetApi.setIsVacation(false);
-    log('Returning home');
-    rooms.forEach(roomName => {
-        resumeSchedule(roomName);
-    });
+    resumeSchedules();
     return 'Welcome home!';
 }

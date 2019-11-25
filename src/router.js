@@ -1,6 +1,7 @@
 import honorSchedule from './actions/honorSchedule';
 import setAway from './actions/setAway';
 import setVacation from './actions/setVacation';
+import resumeSchedules from './actions/resumeSchedules';
 
 export default function route(request, method) {
     if (method === 'get') {
@@ -17,6 +18,8 @@ export default function route(request, method) {
                 return setVacation(request.payload.vacation === 'true');
             case 'away':
                 return setAway(request.payload.away === 'true');
+            case 'redriveSchedule':
+                return resumeSchedules();
             default:
                 return 'No route found';
         }
