@@ -2,7 +2,7 @@ name: Deploy App Script
 on:
     push:
         branches:
-            -master
+            - master
 
 jobs:
     build:
