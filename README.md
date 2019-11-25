@@ -22,11 +22,11 @@ Architecture:
                              | App Script +<---------------------------->+ Google Sheets |
     +------------------------+            |     Get daily schedules      |               |
     |    Set Thermostats     +-----^------+     Manage event logs        +---------------+
-    |                              |            Manage Vacation/Away State
+    |                              |            Manage Away States
     |                              |
-    |      Notify Vacation/Away    |
-+---v---+  status from geofence    |
-|       |  or Voice Command        |
+    |      Notify Away status      |
++---v---+  from geofence, voice    |
+|       |  command, or other method|
 | IFTTT +--------------------------+
 |       |
 +---^---+
@@ -34,7 +34,7 @@ Architecture:
     |                     |                  |
     +---------------------+ Google Assistant |
       Manually Trigger    |                  |
-      Vacation via Voice  +------------------+
+      processes via Voice +------------------+
 
 ```
 
