@@ -53,19 +53,6 @@ Check the schedule and run any necessary processes based on the current time
 `GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
 
 
-#### Away
-Enable or disable Away state.
-
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
-
-with payload
-```json
-{
-    "passcode": "secretString",
-    "away": "true"
-}
-```
-
 #### Spencer Away
 Update Spencer's Away status.
 
@@ -89,19 +76,6 @@ with payload
 {
     "passcode": "secretString",
     "away": "true"
-}
-```
-
-#### Vacation
-Enable or disable Vacation state.
-
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=vacation`
-
-with payload
-```json
-{
-    "passcode": "secretString",
-    "vacation": "true"
 }
 ```
 
