@@ -2,3 +2,5 @@ node_modules
 dist/
 src/_env.js
 coverage/
+creds.json
+.clasprc.json

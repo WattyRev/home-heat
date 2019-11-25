@@ -18,10 +18,10 @@ jobs:
               run: |
                 npm ci
                 npm run build
-                npm run authenticate
                 npm run deploy
               env:
                 CI: true
                 IFTTT_WEBHOOK_KEY: ${{ secrets.iftttWebhookKey }}
                 PASSCODE: ${{ secrets.passcode }}
                 APP_SCRIPT_CREDS: ${{ secrets.appScriptCreds }}
+                CLASPRC: ${{ secrets.clasprc }}
