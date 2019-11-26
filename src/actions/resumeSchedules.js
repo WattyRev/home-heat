@@ -2,8 +2,8 @@ import moment from 'moment';
 import spreadsheetApi from '../api/SpreadsheetApi';
 import rooms from '../constants/rooms';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
-import setTemp from './setTemp';
 import log from '../util/log';
+import setTemp from './setTemp';
 
 export default function resumeSchedules() {
     log('Resuming schedules');
