@@ -1,9 +1,9 @@
 import getUrlFetchApp from '../../globals/UrlFetchApp';
 import IftttEvent from '../../models/IftttEvent';
-import getEnv from '../../env';
+import { getScriptProperties } from '../../globals/PropertiesService';
 import api from '../IftttWebhookApi';
 
-jest.mock('../../env');
+jest.mock('../../globals/PropertiesService');
 jest.mock('../../globals/UrlFetchApp');
 jest.mock('../../util/log');
 
@@ -14,7 +14,7 @@ describe('IftttWebhookApi', () => {
         getUrlFetchApp.mockReturnValue({
             fetch: mockFetch,
         });
-        getEnv.mockReturnValue({
+        getScriptProperties.mockReturnValue({
             iftttWebhookKey: 'my-key',
         });
     });

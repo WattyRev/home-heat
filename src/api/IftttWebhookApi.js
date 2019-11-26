@@ -1,6 +1,6 @@
 import getUrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
-import getEnv from '../env';
+import { getScriptProperties } from '../globals/PropertiesService';
 
 export class IftttWebhookApi {
     constructor() {
@@ -50,7 +50,7 @@ export class IftttWebhookApi {
      * @return {String}       The path name to be hit
      */
     getEventPath(event) {
-        const { iftttWebhookKey } = getEnv();
+        const { iftttWebhookKey } = getScriptProperties();
         return `/${event}/with/key/${iftttWebhookKey}`;
     }
 
