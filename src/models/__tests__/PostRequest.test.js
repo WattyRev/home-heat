@@ -1,11 +1,11 @@
-import getEnv from '../../env';
+import { getScriptProperties } from '../../globals/PropertiesService';
 import PostRequest from '../PostRequest';
 
-jest.mock('../../env');
+jest.mock('../../globals/PropertiesService');
 
 describe('PostRequest', () => {
     beforeEach(() => {
-        getEnv.mockReturnValue({
+        getScriptProperties.mockReturnValue({
             passcode: 'super-secret',
         });
     });

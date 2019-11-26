@@ -27,7 +27,7 @@ export default function honorSchedule() {
     }
 
     // Execute each action
-    log('Taking scheduled action');
+    log('Taking scheduled action', JSON.stringify(actions));
     actions.forEach(action => {
         setTemp(action.roomName, action.temperature);
     });

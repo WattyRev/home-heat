@@ -1,4 +1,4 @@
-import getEnv from '../env';
+import { getScriptProperties } from '../globals/PropertiesService';
 
 export default class PostRequest {
     constructor(requestData) {
@@ -9,7 +9,7 @@ export default class PostRequest {
             requestData.postData.contents
         ) {
             this.payload = JSON.parse(requestData.postData.contents);
-            const { passcode } = getEnv();
+            const { passcode } = getScriptProperties();
             if (this.payload.passcode !== passcode) {
                 throw new Error(`Request made with invalid passcode: ${this.payload.passcode}`);
             }

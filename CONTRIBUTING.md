@@ -13,8 +13,6 @@ npm ci
 npm run authenticate
 ```
 
-3. Create `src/_env.js` from the contents stored in LastPass called HomeHeat Secrets (only needed on clean install)
-
 2. Push code to Google by using:
 ```
 npm run deploy
