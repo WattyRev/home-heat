@@ -30,72 +30,78 @@ describe('SpreadsheetApi', () => {
             ]);
         });
     });
-    describe('getSpencerAway', () => {
-        it('gets the stored away value', () => {
+    describe('getAway', () => {
+        it('returns an array of away users', () => {
             expect.assertions(1);
-            getSpreadsheet.mockReturnValue(
-                createMockSpreadsheet({
-                    Status: [
-                        ['Away', true],
-                        ['Vacation', false],
-                        ['Spencer Away', true],
-                        ['Michael Away', false],
-                    ],
-                })
-            );
-            const response = api.getSpencerAway();
-            expect(response).toEqual(true);
+            const awayUsers = api.getAway();
+            expect(awayUsers).toEqual(['michael']);
         });
     });
-    describe('setSpencerAway', () => {
-        it('sets the stored away value', () => {
+    describe('addAway', () => {
+        it('adds the specified user to the away users list', () => {
+            expect.assertions(2);
+            expect(api.getAway()).toEqual(['michael']);
+            api.addAway('spencer');
+            expect(api.getAway()).toEqual(['michael', 'spencer']);
+        });
+        it('throws if the user was already away', () => {
             expect.assertions(1);
-            getSpreadsheet.mockReturnValue(
-                createMockSpreadsheet({
-                    Status: [
-                        ['Away', true],
-                        ['Vacation', false],
-                        ['Spencer Away', true],
-                        ['Michael Away', false],
-                    ],
-                })
-            );
-            const response = api.setSpencerAway(false);
-            expect(response.getRange(3, 2).getValue()).toEqual(false);
+            api.addAway('spencer');
+            expect(() => api.addAway('spencer')).toThrow();
+        });
+        it('throws if an invalid user is provided', () => {
+            expect.assertions(1);
+            expect(() => api.addAway('shitface')).toThrow();
         });
     });
-    describe('getMichaelAway', () => {
-        it('gets the stored away value', () => {
+    describe('removeAway', () => {
+        it('removes the user from the away list', () => {
+            expect.assertions(2);
+            expect(api.getAway()).toEqual(['michael']);
+            api.removeAway('michael');
+            expect(api.getAway()).toEqual([]);
+        });
+        it('throws if the user was not on the away list', () => {
             expect.assertions(1);
-            getSpreadsheet.mockReturnValue(
-                createMockSpreadsheet({
-                    Status: [
-                        ['Away', true],
-                        ['Vacation', false],
-                        ['Spencer Away', true],
-                        ['Michael Away', false],
-                    ],
-                })
-            );
-            const response = api.getMichaelAway();
-            expect(response).toEqual(false);
+            api.removeAway('michael');
+            expect(() => api.removeAway('michael')).toThrow();
+        });
+        it('throws if an invalid user was provided', () => {
+            expect.assertions(1);
+            expect(() => api.removeAway('fuckface')).toThrow();
         });
     });
-    describe('setMichaelAway', () => {
-        it('sets the stored away value', () => {
+    describe('getUsers', () => {
+        it('returns a list of users from the spreadsheet', () => {
             expect.assertions(1);
-            getSpreadsheet.mockReturnValue(
-                createMockSpreadsheet({
-                    Status: [
-                        ['Away', true],
-                        ['Vacation', false],
-                        ['Spencer Away', true],
-                        ['Michael Away', false],
-                    ],
-                })
-            );
-            const response = api.setMichaelAway(true);
-            expect(response.getRange(4, 2).getValue()).toEqual(true);
+            expect(api.getUsers()).toEqual(['spencer', 'michael']);
+        });
+    });
+    describe('getAllAway', () => {
+        it('returns true if all users are away', () => {
+            expect.assertions(1);
+            api.addAway('spencer');
+            expect(api.getAllAway()).toEqual(true);
+        });
+        it('returns false if any users are away', () => {
+            expect.assertions(1);
+            expect(api.getAllAway()).toEqual(false);
+        });
+    });
+    describe('getUsersForRoom', () => {
+        it('gets the users for each room', () => {
+            expect.assertions(7);
+            expect(api.getUsersForRoom('office')).toEqual(['spencer']);
+            expect(api.getUsersForRoom('bedroom')).toEqual(['spencer']);
+            expect(api.getUsersForRoom('bathroom')).toEqual(['spencer']);
+            expect(api.getUsersForRoom('living_room')).toEqual(['spencer', 'michael']);
+            expect(api.getUsersForRoom('game_room')).toEqual(['spencer', 'michael']);
+            expect(api.getUsersForRoom('guest_room')).toEqual(['michael']);
+            expect(api.getUsersForRoom('guest_bathroom')).toEqual(['michael']);
+        });
+        it('throws if an invalid room was provided', () => {
+            expect.assertions(1);
+            expect(() => api.getUsersForRoom('adult_movie_theater')).toThrow();
         });
     });
 });

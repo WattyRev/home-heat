@@ -1,8 +1,8 @@
 import moment from 'moment';
 import spreadsheetApi from '../api/SpreadsheetApi';
-import { spencerRooms, michaelRooms } from '../constants/rooms';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
 import log from '../util/log';
+import allArrayItemsInHaystack from '../util/allArrayItemsInHaystack';
 import setTemp from './setTemp';
 
 /**
@@ -56,11 +56,11 @@ export function determineActions(dayIndex, hours, minutes) {
     }
     const schedulesByRoomName = spreadsheetApi.getSchedulesByRoomName();
     const actions = Object.keys(schedulesByRoomName).reduce((accumulatedActions, roomName) => {
-        // If this room is currently impacted by away status, don't do anything to it.
-        if (spreadsheetApi.getSpencerAway() && spencerRooms.includes(roomName)) {
-            return accumulatedActions;
-        }
-        if (spreadsheetApi.getMichaelAway() && michaelRooms.includes(roomName)) {
+        // If every user of this room is away, don't do anything to it.
+        const users = spreadsheetApi.getUsersForRoom(roomName);
+        const awayUsers = spreadsheetApi.getAway();
+        const allAway = allArrayItemsInHaystack(users, awayUsers);
+        if (allAway) {
             return accumulatedActions;
         }
 

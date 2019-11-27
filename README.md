@@ -53,29 +53,17 @@ Check the schedule and run any necessary processes based on the current time
 `GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
 
 
-#### Spencer Away
-Update Spencer's Away status.
+#### Away
+Notify that a user has gone away or come home
 
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=spencerAway`
-
-with payload
-```json
-{
-    "passcode": "secretString",
-    "away": "true"
-}
-```
-
-#### Michael Away
-Update Michael's Away status.
-
-`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=michaelAway`
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=away`
 
 with payload
 ```json
 {
     "passcode": "secretString",
-    "away": "true"
+    "away": true,
+    "name": "spencer"
 }
 ```
 
