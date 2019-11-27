@@ -16,8 +16,9 @@ function doGet(e) {
  * Handler for POST requests to the App Script
  */
 function doPost(e) {
-    const output = AppLib.onPost(e);
-    return ContentService.createTextOutput(output);
+    AppLib.onPost(e);
+    // Don't return anything from ContentService because that will result in a 302
+    // https://developers.google.com/apps-script/guides/content#redirects
 }
 
 /**

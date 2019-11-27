@@ -46,9 +46,20 @@ describe('honorSchedule', () => {
                 createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
             ]),
         });
-        spreadsheetApi.getSpencerAway.mockReturnValue(false);
-        spreadsheetApi.getMichaelAway.mockReturnValue(false);
+        spreadsheetApi.getAway.mockReturnValue([]);
         spreadsheetApi.getAllAway.mockReturnValue(false);
+        spreadsheetApi.getUsersForRoom.mockImplementation(roomName => {
+            const map = {
+                office: ['spencer'],
+                bedroom: ['spencer'],
+                bathroom: ['spencer'],
+                living_room: ['spencer', 'michael'],
+                game_room: ['spencer', 'michael'],
+                guest_room: ['michael'],
+                guest_bathroom: ['michael'],
+            };
+            return map[roomName];
+        });
     });
     it('does not take any action if no events line up', () => {
         expect.assertions(1);
@@ -81,8 +92,7 @@ describe('honorSchedule', () => {
     });
     it("does not take action on Spencer's rooms if he is away", () => {
         expect.assertions(1);
-        spreadsheetApi.getSpencerAway.mockReturnValue(true);
-        spreadsheetApi.getMichaelAway.mockReturnValue(false);
+        spreadsheetApi.getAway.mockReturnValue(['spencer']);
         spreadsheetApi.getAllAway.mockReturnValue(false);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
@@ -96,8 +106,7 @@ describe('honorSchedule', () => {
     });
     it("does not take action on Michael's rooms if he is away", () => {
         expect.assertions(1);
-        spreadsheetApi.getSpencerAway.mockReturnValue(false);
-        spreadsheetApi.getMichaelAway.mockReturnValue(true);
+        spreadsheetApi.getAway.mockReturnValue(['michael']);
         spreadsheetApi.getAllAway.mockReturnValue(false);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([

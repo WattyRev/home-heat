@@ -1,63 +1,59 @@
 import spreadsheetApi from '../api/SpreadsheetApi';
-import { spencerRooms, michaelRooms, commonRooms } from '../constants/rooms';
+import rooms from '../constants/rooms';
 import { resumeSchedule } from './resumeSchedules';
 import setTemp from './setTemp';
 import log from '../util/log';
+import allArrayItemsInHaystack from '../util/allArrayItemsInHaystack';
+import anyArrayItemsInHaystack from '../util/anyArrayItemsInHaystack';
 
-export default function setAway(name, isAway) {
+export default function setAway(user, isAway) {
     // If setting away to true, set all relevant rooms to away temperature
+    const awayUsers = spreadsheetApi.getAway();
     if (isAway) {
-        log(`${name} leaving home`);
+        log(`${user} leaving home`);
 
-        // Set relevant rooms to away
-        switch (name) {
-            case 'spencer':
-                spreadsheetApi.setSpencerAway(true);
-                spencerRooms.forEach(roomName => {
-                    setTemp(roomName, 'away');
-                });
-                break;
-            case 'michael':
-                spreadsheetApi.setMichaelAway(true);
-                michaelRooms.forEach(roomName => {
-                    setTemp(roomName, 'away');
-                });
-                break;
-            default:
-                break;
-        }
+        // Set user as away
+        spreadsheetApi.addAway(user);
 
-        // If everyone is away, set common rooms to away
-        if (spreadsheetApi.getAllAway()) {
-            commonRooms.forEach(roomName => {
-                setTemp(roomName, 'away');
-            });
-        }
+        // Set all unused rooms to away
+        const updatedAwayUsers = [...awayUsers, user];
+        rooms.forEach(room => {
+            const roomUsers = spreadsheetApi.getUsersForRoom(room);
+            const allAway = allArrayItemsInHaystack(roomUsers, updatedAwayUsers);
+            if (allAway) {
+                setTemp(room, 'away');
+            }
+        });
         return 'See you later!';
     }
 
-    log(`${name} arriving home`);
+    log(`${user} arriving home`);
 
-    // Resume relevant rooms
-    switch (name) {
-        case 'spencer':
-            spreadsheetApi.setSpencerAway(false);
-            spencerRooms.forEach(roomName => {
-                resumeSchedule(roomName);
-            });
-            break;
-        case 'michael':
-            spreadsheetApi.setMichaelAway(false);
-            michaelRooms.forEach(roomName => {
-                resumeSchedule(roomName);
-            });
-            break;
-        default:
-            break;
-    }
+    // Set user as not away
+    spreadsheetApi.removeAway(user);
 
-    // Resume common rooms
-    commonRooms.forEach(roomName => resumeSchedule(roomName));
+    // Resume all rooms used by this user that did not already have a present user
+    // The second check prevents overriding a user's manual temperature setting
+    // when another room user gets home.
+    const users = spreadsheetApi.getUsers();
+    const previouslyPresentUsers = users.filter(_user => {
+        if (awayUsers.includes(_user)) {
+            return false;
+        }
+        if (_user === user) {
+            return false;
+        }
+        return true;
+    });
+    rooms.forEach(room => {
+        const roomUsers = spreadsheetApi.getUsersForRoom(room);
+        if (
+            roomUsers.includes(user) &&
+            !anyArrayItemsInHaystack(roomUsers, previouslyPresentUsers)
+        ) {
+            resumeSchedule(room);
+        }
+    });
 
     return 'Welcome home!';
 }

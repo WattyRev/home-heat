@@ -13,10 +13,8 @@ export default function route(request, method) {
     }
     if (method === 'post') {
         switch (request.action) {
-            case 'spencerAway':
-                return setAway('spencer', request.payload.away === 'true');
-            case 'michaelAway':
-                return setAway('michael', request.payload.away === 'true');
+            case 'away':
+                return setAway(request.payload.name, request.payload.away);
             case 'redriveSchedule':
                 return resumeSchedules();
             default:
