@@ -33,7 +33,7 @@ function formatMessage(...message) {
     if (message.length > MAX_LOG_COLUMNS - 1) {
         throw new Error('cannot log this many messages');
     }
-    const base = [moment().format(), ...message];
+    const base = [moment().toDate(), ...message];
     for (let i = base.length; i < MAX_LOG_COLUMNS; i++) {
         base.push('');
     }
