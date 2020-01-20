@@ -79,6 +79,32 @@ with payload
 }
 ```
 
+#### Hold
+Set a room on hold to prevent automatic changes in temperature
+
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=hold`
+
+with payload
+```json
+{
+    "passcode": "secretString",
+    "room": "office"
+}
+```
+
+#### Stop Hold
+Remove a room from hold to resume automatic changes in temperature
+
+`POST https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=stopHold`
+
+with payload
+```json
+{
+    "passcode": "secretString",
+    "room": "office"
+}
+```
+
 ### Google Sheets
 https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJLoNQ/edit#gid=0 (No you can't have access. This link is for my benefit not yours.)
 

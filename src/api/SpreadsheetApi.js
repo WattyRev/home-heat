@@ -1,4 +1,5 @@
 import getSpreadsheet from '../globals/Spreadsheet';
+import rooms from '../constants/rooms';
 import allArrayItemsInHaystack from '../util/allArrayItemsInHaystack';
 
 class SpreadsheetApi {
@@ -142,6 +143,71 @@ class SpreadsheetApi {
         const cell = configSheet.getRange(...cellRef);
         const value = cell.getValue();
         return value ? value.split(', ') : [];
+    }
+
+    get holdCell() {
+        const spreadsheet = getSpreadsheet();
+        const statusSheet = spreadsheet.getSheetByName('Status');
+        return statusSheet.getRange(2, 2);
+    }
+
+    /**
+     * Get all the rooms that are currently on hold.
+     * @return {String[]}
+     */
+    getHold() {
+        const value = this.holdCell.getValue();
+        return value ? value.split(', ') : [];
+    }
+
+    /**
+     * Add the provided room to the hold list
+     * @param {String} room The name of the room to put on hold
+     */
+    addHold(room) {
+        // Validate
+        const hold = this.getHold();
+        if (hold.includes(room)) {
+            throw new Error(
+                `Attempted to set ${room} on hold even though ${room} is already on hold.`
+            );
+        }
+        if (!rooms.includes(room)) {
+            throw new Error(
+                `Attempted to set ${room} on hold, but ${room} is not a supported room name.`
+            );
+        }
+
+        // Add room to list
+        hold.push(room);
+
+        // Save
+        this.holdCell.setValue(hold.join(', '));
+    }
+
+    /**
+     * Remove the provided room from the hold list
+     * @param {String} room The room that is to be taken off of hold
+     */
+    removeHold(room) {
+        // Validate
+        let hold = this.getHold();
+        if (!hold.includes(room)) {
+            throw new Error(
+                `Attempted to remove ${room} from hold even though ${room} is not on hold.`
+            );
+        }
+        if (!rooms.includes(room)) {
+            throw new Error(
+                `Attempted to remove ${room} from hold, but ${room} is not a supported room name`
+            );
+        }
+
+        // Remove user from list
+        hold = hold.filter(holdRoom => holdRoom !== room);
+
+        // Save
+        this.holdCell.setValue(hold.join(', '));
     }
 }
 

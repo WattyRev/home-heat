@@ -104,4 +104,45 @@ describe('SpreadsheetApi', () => {
             expect(() => api.getUsersForRoom('adult_movie_theater')).toThrow();
         });
     });
+    describe('getHold', () => {
+        it('returns an array of rooms on hold', () => {
+            expect.assertions(1);
+            const holdRooms = api.getHold();
+            expect(holdRooms).toEqual(['office']);
+        });
+    });
+    describe('addHold', () => {
+        it('adds the specified room to the hold list', () => {
+            expect.assertions(2);
+            expect(api.getHold()).toEqual(['office']);
+            api.addHold('bedroom');
+            expect(api.getHold()).toEqual(['office', 'bedroom']);
+        });
+        it('throws if the room was already on hold', () => {
+            expect.assertions(1);
+            api.addHold('bedroom');
+            expect(() => api.addHold('bedroom')).toThrow();
+        });
+        it('throws if an invalid room is provided', () => {
+            expect.assertions(1);
+            expect(() => api.addHold('shitface')).toThrow();
+        });
+    });
+    describe('removeHold', () => {
+        it('removes the room from the hold list', () => {
+            expect.assertions(2);
+            expect(api.getHold()).toEqual(['office']);
+            api.removeHold('office');
+            expect(api.getHold()).toEqual([]);
+        });
+        it('throws if the room was not on the hold list', () => {
+            expect.assertions(1);
+            api.removeHold('office');
+            expect(() => api.removeHold('office')).toThrow();
+        });
+        it('throws if an invalid room was provided', () => {
+            expect.assertions(1);
+            expect(() => api.removeHold('fuckface')).toThrow();
+        });
+    });
 });

@@ -125,7 +125,10 @@ export function createMockSheet(data) {
  */
 export function createMockSpreadsheet(overrides = {}) {
     const data = {
-        'Status': [['Away', 'michael']],
+        'Status': [
+            ['Away', 'michael'],
+            ['Rooms on hold', 'office'],
+        ],
         'Config': [
             ['Users', 'spencer, michael'],
             ['Office users', 'spencer'],
