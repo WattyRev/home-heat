@@ -10,7 +10,7 @@ export function hold(colloquialRoom) {
     const room = getRoom(colloquialRoom);
     if (!room) {
         throw new Error(
-            `Attempted to place ${colloquialRoom} on hold, but it does not match any room alias.`
+            `Attempted to place "${colloquialRoom}" on hold, but it does not match any room alias.`
         );
     }
     spreadsheetApi.addHold(room);
@@ -25,7 +25,7 @@ export function stopHold(colloquialRoom) {
     const room = getRoom(colloquialRoom);
     if (!room) {
         throw new Error(
-            `Attempted to remove ${colloquialRoom} from hold, but it does not match any room alias.`
+            `Attempted to remove "${colloquialRoom}" from hold, but it does not match any room alias.`
         );
     }
     spreadsheetApi.removeHold(room);
