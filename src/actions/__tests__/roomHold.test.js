@@ -2,6 +2,7 @@ import spreadsheetApi from '../../api/SpreadsheetApi';
 import { hold, stopHold } from '../roomHold';
 
 jest.mock('../../api/SpreadsheetApi');
+jest.mock('../../util/log');
 
 describe('roomHold', () => {
     beforeEach(() => {

@@ -1,4 +1,5 @@
 import spreadsheetApi from '../api/SpreadsheetApi';
+import log from '../util/log';
 
 /**
  * Puts the specified room on hold, preventing the temperature from being
@@ -13,6 +14,7 @@ export function hold(colloquialRoom) {
         );
     }
     spreadsheetApi.addHold(room);
+    log(`The ${room} has been set on hold`);
 }
 
 /**
@@ -28,6 +30,7 @@ export function stopHold(colloquialRoom) {
         );
     }
     spreadsheetApi.removeHold(room);
+    log(`The ${room} has been removed from hold`);
 }
 
 /**
