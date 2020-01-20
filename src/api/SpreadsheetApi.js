@@ -21,6 +21,45 @@ class SpreadsheetApi {
     }
 
     /**
+     * Gets all the aliases for the rooms. Aliases are alternative spoken versions of the room name.
+     * @return {Object}
+     */
+    getRoomAliases() {
+        const spreadsheet = getSpreadsheet();
+        const configSheet = spreadsheet.getSheetByName('Config');
+        return {
+            living_room: configSheet
+                .getRange(12, 2)
+                .getValue()
+                .split(', '),
+            bedroom: configSheet
+                .getRange(11, 2)
+                .getValue()
+                .split(', '),
+            office: configSheet
+                .getRange(10, 2)
+                .getValue()
+                .split(', '),
+            bathroom: configSheet
+                .getRange(16, 2)
+                .getValue()
+                .split(', '),
+            game_room: configSheet
+                .getRange(13, 2)
+                .getValue()
+                .split(', '),
+            guest_room: configSheet
+                .getRange(14, 2)
+                .getValue()
+                .split(', '),
+            guest_bathroom: configSheet
+                .getRange(15, 2)
+                .getValue()
+                .split(', '),
+        };
+    }
+
+    /**
      * Get the cell that contains Away settings
      * @return {Range} https://developers.google.com/apps-script/reference/spreadsheet/range
      */

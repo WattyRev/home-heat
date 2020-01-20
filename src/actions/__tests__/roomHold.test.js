@@ -4,6 +4,11 @@ import { hold, stopHold } from '../roomHold';
 jest.mock('../../api/SpreadsheetApi');
 
 describe('roomHold', () => {
+    beforeEach(() => {
+        spreadsheetApi.getRoomAliases.mockReturnValue({
+            living_room: ['living room'],
+        });
+    });
     describe('hold', () => {
         it('sets the room on hold', () => {
             expect.assertions(1);

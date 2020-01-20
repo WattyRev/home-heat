@@ -30,6 +30,21 @@ describe('SpreadsheetApi', () => {
             ]);
         });
     });
+    describe('getRoomAliases', () => {
+        it('gets all the room aliases from the Config sheet', () => {
+            expect.assertions(1);
+            const response = api.getRoomAliases();
+            expect(response).toEqual({
+                living_room: ['living room', 'the living room'],
+                bedroom: ['bedroom', 'the bedroom'],
+                office: ['office', 'the office'],
+                bathroom: ['bathroom', 'the bathroom'],
+                game_room: ['game room', 'the game room', 'dining room', 'the dining room'],
+                guest_room: ['guest room', 'the guest room', 'guest bedroom', 'the guest bedroom'],
+                guest_bathroom: ['guest bathroom', 'the guest bathroom'],
+            });
+        });
+    });
     describe('getAway', () => {
         it('returns an array of away users', () => {
             expect.assertions(1);

@@ -1,4 +1,3 @@
-import { roomAliases } from '../constants/rooms';
 import spreadsheetApi from '../api/SpreadsheetApi';
 
 /**
@@ -39,6 +38,7 @@ export function stopHold(colloquialRoom) {
  */
 function getRoom(colloquialRoom) {
     const cleanedColloquialRoom = colloquialRoom.trim().toLowerCase();
+    const roomAliases = spreadsheetApi.getRoomAliases();
     return Object.keys(roomAliases).find(roomName => {
         const aliases = roomAliases[roomName];
         const match = aliases.find(alias => alias === cleanedColloquialRoom);
