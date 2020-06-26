@@ -248,6 +248,15 @@ class SpreadsheetApi {
         // Save
         this.holdCell.setValue(hold.join(', '));
     }
+
+    /** Get the Weather Override Temp setting from Config */
+    getWeatherOverrideTemp() {
+        const spreadsheet = getSpreadsheet();
+        const statusSheet = spreadsheet.getSheetByName('Config');
+        // Cell 18B
+        const cell = statusSheet.getRange(18, 2);
+        return parseInt(cell.getValue());
+    }
 }
 
 export default new SpreadsheetApi();

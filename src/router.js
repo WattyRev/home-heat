@@ -1,3 +1,4 @@
+import weatherApi from './api/WeatherApi';
 import honorSchedule from './actions/honorSchedule';
 import setAway from './actions/setAway';
 import resumeSchedules from './actions/resumeSchedules';
@@ -6,6 +7,8 @@ import { hold, stopHold } from './actions/roomHold';
 export default function route(request, method) {
     if (method === 'get') {
         switch (request.action) {
+            case 'temp':
+                return weatherApi().getRecentHighTemperature();
             case 'honorSchedule':
                 return honorSchedule();
             default:
