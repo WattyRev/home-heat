@@ -7,8 +7,9 @@ import { hold, stopHold } from './actions/roomHold';
 export default function route(request, method) {
     if (method === 'get') {
         switch (request.action) {
-            case 'temp':
-                return weatherApi().getRecentHighTemperature();
+            // A route for debugging the temperature logic
+            case 'getHighTemperature':
+                return weatherApi.getRecentHighTemperature();
             case 'honorSchedule':
                 return honorSchedule();
             default:
