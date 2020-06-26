@@ -1,4 +1,5 @@
 import IftttEvent from '../models/IftttEvent';
+import weatherApi from '../api/WeatherApi';
 import api from '../api/IftttWebhookApi';
 import rooms from '../constants/rooms';
 import temperatures from '../constants/temperatures';
@@ -22,6 +23,16 @@ export default function setTemp(roomName, temperature) {
     if (spreadsheetApi.getHold().includes(roomName)) {
         log(`Skipped setting ${roomName} to ${temperature} because the room is on hold.`);
         return;
+    }
+    if (temperature === 'shower') {
+        const overrideTemp = spreadsheetApi.getWeatherOverrideTemp();
+        const recentHighTemp = weatherApi.getRecentHighTemperature();
+        if (overrideTemp <= recentHighTemp) {
+            log(
+                `Skipped setting ${roomName} to ${temperature} because the recent high temperature is over ${overrideTemp} degrees.`
+            );
+            return;
+        }
     }
 
     // Action

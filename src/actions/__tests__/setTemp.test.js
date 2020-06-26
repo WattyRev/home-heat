@@ -1,14 +1,17 @@
 import api from '../../api/IftttWebhookApi';
 import spreadsheetApi from '../../api/SpreadsheetApi';
+import weatherApi from '../../api/WeatherApi';
 import setTemp from '../setTemp';
 
 jest.mock('../../api/IftttWebhookApi');
 jest.mock('../../api/SpreadsheetApi');
 jest.mock('../../util/log');
+jest.mock('../../api/WeatherApi');
 
 describe('setTemp', () => {
     beforeEach(() => {
         spreadsheetApi.getHold.mockReturnValue([]);
+        spreadsheetApi.getWeatherOverrideTemp.mockReturnValue(75);
     });
     it('triggers an event on the API', () => {
         expect.assertions(3);
@@ -31,5 +34,17 @@ describe('setTemp', () => {
         spreadsheetApi.getHold.mockReturnValue(['office']);
         setTemp('office', 'idle');
         expect(api.triggerEvent).not.toHaveBeenCalled();
+    });
+    it("does not trigger an event on the API if temperature is shower and it's been too hot outside", () => {
+        expect.assertions(1);
+        weatherApi.getRecentHighTemperature.mockReturnValue(76);
+        setTemp('bathroom', 'shower');
+        expect(api.triggerEvent).not.toHaveBeenCalled();
+    });
+    it('does trigger an event on the API if the temperature is shower and it has not been hot outside', () => {
+        expect.assertions(1);
+        weatherApi.getRecentHighTemperature.mockReturnValue(55);
+        setTemp('bathroom', 'shower');
+        expect(api.triggerEvent).toHaveBeenCalled();
     });
 });

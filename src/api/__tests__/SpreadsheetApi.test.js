@@ -160,4 +160,11 @@ describe('SpreadsheetApi', () => {
             expect(() => api.removeHold('fuckface')).toThrow();
         });
     });
+    describe('getWeatherOverrideTemp', () => {
+        it('returns the set weather override temperature as an integer', () => {
+            expect.assertions(1);
+            const response = api.getWeatherOverrideTemp();
+            expect(response).toEqual(75);
+        });
+    });
 });
