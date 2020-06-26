@@ -146,6 +146,8 @@ export function createMockSpreadsheet(overrides = {}) {
             ['Guest Room Aliases', 'guest room, the guest room, guest bedroom, the guest bedroom'],
             ['Guest Bathroom Aliases', 'guest bathroom, the guest bathroom'],
             ['Bathroom Aliases', 'bathroom, the bathroom'],
+            [],
+            ['Weather Override Temp (F)', '75'],
         ],
         'Logs': [['mock logs']],
         'Office Schedule': [['mock office schedule']],
