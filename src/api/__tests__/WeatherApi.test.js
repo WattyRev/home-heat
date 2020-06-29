@@ -65,7 +65,7 @@ describe('WeatherAPI', () => {
                         ...mockWeatherResponse,
                         hourly: [
                             {
-                                dt: 1593043200,
+                                dt: 1592973200,
                                 temp: 1000.79,
                             },
                             ...mockWeatherResponse.hourly,
