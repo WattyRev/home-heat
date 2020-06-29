@@ -30,6 +30,8 @@ export class WeatherApi {
                 .getTime() / 1000
         );
 
+        log(`Requested time ${moment(new Date(beginningOfDay * 1000)).format('YYYY-MM-DD HH:MM')}`);
+
         // Make the request
         const response = getUrlFetchApp().fetch(
             `${this.config.baseURL}/timemachine?lat=${LATITUDE}&lon=${LONGITUDE}&dt=${beginningOfDay}&appid=${weatherMapApiKey}&units=imperial`,
@@ -51,6 +53,12 @@ export class WeatherApi {
                 return currentHigh;
             },
             { temp: 0, dt: 0 }
+        );
+        log(`first item: ${moment(new Date(hourly[0].dt * 1000)).format('YYYY-MM-DD HH:MM')}`);
+        log(
+            `last item: ${moment(new Date(hourly[hourly.length - 1].dt * 1000)).format(
+                'YYYY-MM-DD HH:MM'
+            )}`
         );
         log(
             `Highest recent temp is ${highestItem.temp}F at ${moment(
