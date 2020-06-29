@@ -30,8 +30,6 @@ export class WeatherApi {
                 .getTime() / 1000
         );
 
-        log(`Requested time ${moment(new Date(beginningOfDay * 1000)).format('YYYY-MM-DD HH:MM')}`);
-
         // Make the request
         const response = getUrlFetchApp().fetch(
             `${this.config.baseURL}/timemachine?lat=${LATITUDE}&lon=${LONGITUDE}&dt=${beginningOfDay}&appid=${weatherMapApiKey}&units=imperial`,
@@ -45,20 +43,20 @@ export class WeatherApi {
 
         // Loop through the hourly data looking for the hi
         const { hourly } = data;
+        const todaysDate = moment().date();
         const highestItem = hourly.reduce(
             (currentHigh, hourlyData) => {
-                if (hourlyData.temp > currentHigh.temp) {
-                    return hourlyData;
+                // Exclude any data that isn't from today
+                const date = moment(new Date(hourlyData.dt * 1000)).date();
+                if (todaysDate !== date) {
+                    return currentHigh;
                 }
-                return currentHigh;
+                if (hourlyData.temp < currentHigh.temp) {
+                    return currentHigh;
+                }
+                return hourlyData;
             },
             { temp: 0, dt: 0 }
-        );
-        log(`first item: ${moment(new Date(hourly[0].dt * 1000)).format('YYYY-MM-DD HH:MM')}`);
-        log(
-            `last item: ${moment(new Date(hourly[hourly.length - 1].dt * 1000)).format(
-                'YYYY-MM-DD HH:MM'
-            )}`
         );
         log(
             `Highest recent temp is ${highestItem.temp}F at ${moment(
