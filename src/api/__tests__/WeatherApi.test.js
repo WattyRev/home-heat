@@ -19,9 +19,12 @@ describe('WeatherAPI', () => {
                 const momentObj = {
                     date: jest.fn(() => 25),
                     set: jest.fn(),
-                    toDate: jest.fn(() => new Date('2020-06-25 00:00:00 GMT-0700')),
+                    toDate: jest.fn(() => new Date('2020-06-25 22:00:00 GMT-0700')),
                 };
-                momentObj.set = jest.fn(() => momentObj);
+                momentObj.set = jest.fn(() => ({
+                    ...momentObj,
+                    toDate: jest.fn(() => new Date('2020-06-25 00:00:00 GMT-0700')),
+                }));
                 return momentObj;
             }
             return {
@@ -31,13 +34,24 @@ describe('WeatherAPI', () => {
         });
     });
     describe('getRecentHighTemperature', () => {
-        let fetch;
+        let getRequest;
+        let fetchAll;
         beforeEach(() => {
-            fetch = jest.fn().mockReturnValue({
+            getRequest = jest.fn(() => 'test');
+            jest.fn().mockReturnValue({
                 getContentText: jest.fn(() => JSON.stringify(mockWeatherResponse)),
             });
+            fetchAll = jest.fn(() => [
+                {
+                    getContentText: jest.fn(() => JSON.stringify(mockWeatherResponse)),
+                },
+                {
+                    getContentText: jest.fn(() => JSON.stringify(mockWeatherResponse)),
+                },
+            ]);
             getUrlFetchApp.mockReturnValue({
-                fetch,
+                getRequest,
+                fetchAll,
             });
         });
 
@@ -46,11 +60,17 @@ describe('WeatherAPI', () => {
             expect(weatherApi.getRecentHighTemperature()).toEqual(78.04);
         });
 
-        it('makes a request to the appropriate URL', () => {
-            expect.assertions(1);
+        it('makes requests to the appropriate URLs', () => {
+            expect.assertions(2);
             weatherApi.getRecentHighTemperature();
             expect(
-                fetch
+                getRequest
+            ).toHaveBeenCalledWith(
+                `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=47.450249&lon=-122.308815&dt=1593147600&appid=api-key&units=imperial`,
+                { method: 'get' }
+            );
+            expect(
+                getRequest
             ).toHaveBeenCalledWith(
                 `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=47.450249&lon=-122.308815&dt=1593068400&appid=api-key&units=imperial`,
                 { method: 'get' }
@@ -59,20 +79,25 @@ describe('WeatherAPI', () => {
 
         it('does not select high temperatures from yesterday', () => {
             expect.assertions(1);
-            fetch.mockReturnValue({
-                getContentText: jest.fn(() =>
-                    JSON.stringify({
-                        ...mockWeatherResponse,
-                        hourly: [
-                            {
-                                dt: 1592973200,
-                                temp: 1000.79,
-                            },
-                            ...mockWeatherResponse.hourly,
-                        ],
-                    })
-                ),
-            });
+            fetchAll.mockReturnValue([
+                {
+                    getContentText: jest.fn(() =>
+                        JSON.stringify({
+                            ...mockWeatherResponse,
+                            hourly: [
+                                {
+                                    dt: 1592973200,
+                                    temp: 1000.79,
+                                },
+                                ...mockWeatherResponse.hourly,
+                            ],
+                        })
+                    ),
+                },
+                {
+                    getContentText: jest.fn(() => JSON.stringify(mockWeatherResponse)),
+                },
+            ]);
             expect(weatherApi.getRecentHighTemperature()).toEqual(78.04);
         });
     });
