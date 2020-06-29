@@ -52,6 +52,11 @@ Check the schedule and run any necessary processes based on the current time
 
 `GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=honorSchedule`
 
+#### Get high temperature
+Get the recent high temperature
+
+`GET https://script.google.com/macros/s/AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSM/exec?action=getHighTemperature`
+
 
 #### Away
 Notify that a user has gone away or come home
