@@ -1,6 +1,5 @@
 import getSpreadsheet from '../globals/Spreadsheet';
 import rooms from '../constants/rooms';
-import allArrayItemsInHaystack from '../util/allArrayItemsInHaystack';
 
 class SpreadsheetApi {
     getLogsSheet() {
@@ -141,18 +140,6 @@ class SpreadsheetApi {
         const usersCell = configSheet.getRange(1, 2);
         const value = usersCell.getValue();
         return value ? value.split(', ') : [];
-    }
-
-    /**
-     * Determine if all users are away.
-     * @return {Boolean} true if all users are away
-     */
-    getAllAway() {
-        const users = this.getUsers();
-        const awayUsers = this.getAway();
-
-        // Check that every user is present in the awayUsers list.
-        return allArrayItemsInHaystack(users, awayUsers);
     }
 
     /**

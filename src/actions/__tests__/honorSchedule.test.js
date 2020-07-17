@@ -47,7 +47,6 @@ describe('honorSchedule', () => {
             ]),
         });
         spreadsheetApi.getAway.mockReturnValue([]);
-        spreadsheetApi.getAllAway.mockReturnValue(false);
         spreadsheetApi.getUsersForRoom.mockImplementation(roomName => {
             const map = {
                 office: ['spencer'],
@@ -84,19 +83,31 @@ describe('honorSchedule', () => {
             '',
         ]);
     });
-    it('does not take action if everyone is away', () => {
+    it('maintains away temperature on all rooms if everyone is away', () => {
         expect.assertions(1);
-        spreadsheetApi.getAllAway.mockReturnValue(true);
-        const response = honorSchedule();
-        expect(response).toEqual('No actions to take at this time.');
-    });
-    it("does not take action on Spencer's rooms if he is away", () => {
-        expect.assertions(1);
-        spreadsheetApi.getAway.mockReturnValue(['spencer']);
-        spreadsheetApi.getAllAway.mockReturnValue(false);
+        spreadsheetApi.getAway.mockReturnValue(['michael', 'spencer']);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
+            '* Set office to away',
+            '* Set bedroom to away',
+            '* Set bathroom to away',
+            '* Set living_room to away',
+            '* Set game_room to away',
+            '* Set guest_room to away',
+            '* Set guest_bathroom to away',
+            '',
+        ]);
+    });
+    it("maintains away temperature on Spencer's rooms if he is away", () => {
+        expect.assertions(1);
+        spreadsheetApi.getAway.mockReturnValue(['spencer']);
+        const response = honorSchedule();
+        expect(response.split('\n')).toEqual([
+            'Took the following actions:',
+            '* Set office to away',
+            '* Set bedroom to away',
+            '* Set bathroom to away',
             '* Set living_room to comfort',
             '* Set game_room to away',
             '* Set guest_room to sleep',
@@ -107,7 +118,6 @@ describe('honorSchedule', () => {
     it("does not take action on Michael's rooms if he is away", () => {
         expect.assertions(1);
         spreadsheetApi.getAway.mockReturnValue(['michael']);
-        spreadsheetApi.getAllAway.mockReturnValue(false);
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
@@ -116,6 +126,8 @@ describe('honorSchedule', () => {
             '* Set bathroom to shower',
             '* Set living_room to comfort',
             '* Set game_room to away',
+            '* Set guest_room to away',
+            '* Set guest_bathroom to away',
             '',
         ]);
     });

@@ -20,10 +20,12 @@ export default function setTemp(roomName, temperature) {
             )}`
         );
     }
+    // Prevent setting temperature if room is on hold
     if (spreadsheetApi.getHold().includes(roomName)) {
         log(`Skipped setting ${roomName} to ${temperature} because the room is on hold.`);
         return;
     }
+    // Prevent setting shower temperature if it has been hot outside
     if (temperature === 'shower') {
         const overrideTemp = spreadsheetApi.getWeatherOverrideTemp();
         const recentHighTemp = weatherApi.getRecentHighTemperature();

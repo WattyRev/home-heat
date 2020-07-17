@@ -50,20 +50,8 @@ export default function honorSchedule() {
  *                           room name and temperature.
  */
 export function determineActions(dayIndex, hours, minutes) {
-    // If everyone is away, leave thermostats alone
-    if (spreadsheetApi.getAllAway()) {
-        return [];
-    }
     const schedulesByRoomName = spreadsheetApi.getSchedulesByRoomName();
     const actions = Object.keys(schedulesByRoomName).reduce((accumulatedActions, roomName) => {
-        // If every user of this room is away, don't do anything to it.
-        const users = spreadsheetApi.getUsersForRoom(roomName);
-        const awayUsers = spreadsheetApi.getAway();
-        const allAway = allArrayItemsInHaystack(users, awayUsers);
-        if (allAway) {
-            return accumulatedActions;
-        }
-
         const schedule = schedulesByRoomName[roomName];
 
         // Get the data starting at row 3 (after the headings) and column {dayIndex}
@@ -101,9 +89,17 @@ export function determineActions(dayIndex, hours, minutes) {
 
         // Add the relevant row data to the actions list if one exists
         if (relevantRow) {
+            // If every user of this room is away maintain the away temperature
+            // This ensures that if someone leaves their cell wifi off and sets
+            // temperatures manually, we aren't stuck with that temperature.
+            const users = spreadsheetApi.getUsersForRoom(roomName);
+            const awayUsers = spreadsheetApi.getAway();
+            const allAway = allArrayItemsInHaystack(users, awayUsers);
+            const temperature = allAway ? 'away' : relevantRow[1];
+
             accumulatedActions.push({
                 roomName,
-                temperature: relevantRow[1],
+                temperature,
             });
         }
 
