@@ -92,17 +92,6 @@ describe('SpreadsheetApi', () => {
             expect(api.getUsers()).toEqual(['spencer', 'michael']);
         });
     });
-    describe('getAllAway', () => {
-        it('returns true if all users are away', () => {
-            expect.assertions(1);
-            api.addAway('spencer');
-            expect(api.getAllAway()).toEqual(true);
-        });
-        it('returns false if any users are away', () => {
-            expect.assertions(1);
-            expect(api.getAllAway()).toEqual(false);
-        });
-    });
     describe('getUsersForRoom', () => {
         it('gets the users for each room', () => {
             expect.assertions(7);
