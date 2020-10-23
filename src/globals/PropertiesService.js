@@ -6,6 +6,7 @@
  * Provides:
  * iftttWebhookKey
  * passcode
+ * homeAssistantToken
  */
 export function getScriptProperties() {
     return PropertiesService.getScriptProperties().getProperties();

@@ -35,7 +35,7 @@ export default function honorSchedule() {
     // Report on actions taken
     const message = actions.reduce(
         (builtMessage, action) =>
-            `${builtMessage}* Set ${action.roomName} to ${action.temperature}\n`,
+            `${builtMessage}* Set ${action.roomName} to ${action.temperature}F\n`,
         'Took the following actions:\n'
     );
     return message;
@@ -67,7 +67,7 @@ export function determineActions(dayIndex, hours, minutes) {
         const relevantRow = relevantRows.find(row => {
             // The time returns in a format like "1899-12-30T17:30:00.000Z"
             const time = row[0];
-            // Temperature is one of the temperature values (idle, comfort, etc)
+            // Temperature is a numeric value in fereinheight
             const temperature = row[1];
 
             // If there's no time or temp, skip this row
@@ -95,7 +95,7 @@ export function determineActions(dayIndex, hours, minutes) {
             const users = spreadsheetApi.getUsersForRoom(roomName);
             const awayUsers = spreadsheetApi.getAway();
             const allAway = allArrayItemsInHaystack(users, awayUsers);
-            const temperature = allAway ? 'away' : relevantRow[1];
+            const temperature = allAway ? 55 : parseInt(relevantRow[1]);
 
             accumulatedActions.push({
                 roomName,

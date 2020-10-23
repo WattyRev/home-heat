@@ -16,9 +16,9 @@ describe('resumeShedule', () => {
         spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('', '', '', '', '1899-12-30T10:00:00.000Z', 'away'),
-                createScheduleRow('', '', '', '', '1899-12-30T14:00:00.000Z', 'comfort'),
-                createScheduleRow('', '', '', '', '1899-12-30T12:00:00.000Z', 'idle'),
+                createScheduleRow('', '', '', '', '1899-12-30T10:00:00.000Z', 55),
+                createScheduleRow('', '', '', '', '1899-12-30T14:00:00.000Z', 72),
+                createScheduleRow('', '', '', '', '1899-12-30T12:00:00.000Z', 60),
             ]),
         });
     });
@@ -27,21 +27,21 @@ describe('resumeShedule', () => {
         // Mock current time to Tuesday 11:00 AM
         MockDate.set('2019-11-26T11:00:00.000Z');
         resumeSchedule('office');
-        expect(setTemp).toHaveBeenCalledWith('office', 'away');
+        expect(setTemp).toHaveBeenCalledWith('office', 55);
     });
     it('sets the temperature based on the most recent event if that was yesterday', () => {
         expect.assertions(1);
         // Mock current time to Wednesday 11:00 AM
         MockDate.set('2019-11-27T11:00:00.000Z');
         resumeSchedule('office');
-        expect(setTemp).toHaveBeenCalledWith('office', 'comfort');
+        expect(setTemp).toHaveBeenCalledWith('office', 72);
     });
     it('sets the temperature based on the most recent event if that was 1 week ago', () => {
         expect.assertions(1);
         // Mock current time to Tuesday 9:00 AM
         MockDate.set('2019-11-26T09:00:00.000Z');
         resumeSchedule('office');
-        expect(setTemp).toHaveBeenCalledWith('office', 'comfort');
+        expect(setTemp).toHaveBeenCalledWith('office', 72);
     });
     it('does nothing if no event is scheduled', () => {
         expect.assertions(1);

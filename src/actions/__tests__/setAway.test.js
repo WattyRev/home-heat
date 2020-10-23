@@ -32,20 +32,20 @@ describe('setAway', () => {
         it('only sets rooms that the user uses to away', () => {
             expect.assertions(7);
             setAway('spencer', true);
-            expect(setTemp).toHaveBeenCalledWith('office', 'away');
-            expect(setTemp).toHaveBeenCalledWith('bedroom', 'away');
-            expect(setTemp).toHaveBeenCalledWith('bathroom', 'away');
-            expect(setTemp).not.toHaveBeenCalledWith('living_room', 'away');
-            expect(setTemp).not.toHaveBeenCalledWith('game_room', 'away');
-            expect(setTemp).not.toHaveBeenCalledWith('guest_room', 'away');
-            expect(setTemp).not.toHaveBeenCalledWith('guest_bathroom', 'away');
+            expect(setTemp).toHaveBeenCalledWith('office', 55);
+            expect(setTemp).toHaveBeenCalledWith('bedroom', 55);
+            expect(setTemp).toHaveBeenCalledWith('bathroom', 55);
+            expect(setTemp).not.toHaveBeenCalledWith('living_room', 55);
+            expect(setTemp).not.toHaveBeenCalledWith('game_room', 55);
+            expect(setTemp).not.toHaveBeenCalledWith('guest_room', 55);
+            expect(setTemp).not.toHaveBeenCalledWith('guest_bathroom', 55);
         });
         it('it sets shared rooms to away if all the room users are now away', () => {
             expect.assertions(2);
             spreadsheetApi.getAway.mockReturnValue(['michael']);
             setAway('spencer', true);
-            expect(setTemp).toHaveBeenCalledWith('living_room', 'away');
-            expect(setTemp).toHaveBeenCalledWith('game_room', 'away');
+            expect(setTemp).toHaveBeenCalledWith('living_room', 55);
+            expect(setTemp).toHaveBeenCalledWith('game_room', 55);
         });
     });
     describe('isAway = false', () => {

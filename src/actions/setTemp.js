@@ -1,8 +1,6 @@
-import IftttEvent from '../models/IftttEvent';
 import weatherApi from '../api/WeatherApi';
-import api from '../api/IftttWebhookApi';
+import homeAssistantApi from '../api/HomeAssistantApi';
 import rooms from '../constants/rooms';
-import temperatures from '../constants/temperatures';
 import spreadsheetApi from '../api/SpreadsheetApi';
 import log from '../util/log';
 
@@ -13,20 +11,14 @@ export default function setTemp(roomName, temperature) {
             `${roomName} is not a valid room. Please provide one of: ${rooms.join(', ')}`
         );
     }
-    if (!temperatures.includes(temperature)) {
-        throw new Error(
-            `${temperature} is not a valid temperature. Please provide one of: ${temperatures.join(
-                ', '
-            )}`
-        );
-    }
     // Prevent setting temperature if room is on hold
     if (spreadsheetApi.getHold().includes(roomName)) {
         log(`Skipped setting ${roomName} to ${temperature} because the room is on hold.`);
         return;
     }
-    // Prevent setting shower temperature if it has been hot outside
-    if (temperature === 'shower') {
+    // Prevent setting high temperature if it has been hot outside
+    // TODO change to reference thermostat temperature instead of weather
+    if (temperature > 75) {
         const overrideTemp = spreadsheetApi.getWeatherOverrideTemp();
         const recentHighTemp = weatherApi.getRecentHighTemperature();
         if (overrideTemp <= recentHighTemp) {
@@ -38,9 +30,5 @@ export default function setTemp(roomName, temperature) {
     }
 
     // Action
-    const event = new IftttEvent({
-        roomName,
-        temperature,
-    });
-    api.triggerEvent(event);
+    homeAssistantApi.setTemperature(roomName, temperature);
 }
