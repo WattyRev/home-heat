@@ -2,16 +2,17 @@ import getUrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
 import { getScriptProperties } from '../globals/PropertiesService';
 
-export class IftttWebhookApi {
+export class HomeAssistantApi {
     constructor() {
         this.config = {
             /**
              * The base url for all API requests
              */
-            baseURL: 'https://maker.ifttt.com/trigger',
+            baseURL: 'http://wattyha.duckdns.org:1111/api',
             options: {
                 headers: {
-                    Accept: 'application/json',
+                    'Authorization': `Bearer ${getScriptProperties().homeAssistantToken}`,
+                    'Content-Type': 'application/json',
                 },
             },
         };
@@ -44,24 +45,21 @@ export class IftttWebhookApi {
         });
     }
 
-    /**
-     * Get the path string for making event requests.
-     * @param  {String} event the name of the event
-     * @return {String}       The path name to be hit
-     */
-    getEventPath(event) {
-        const { iftttWebhookKey } = getScriptProperties();
-        return `/${event}/with/key/${iftttWebhookKey}`;
-    }
-
-    /**
-     * Trigger an IFTTT webhook event.
-     * @param  {IftttEvent} event the Event to trigger
-     */
-    triggerEvent(event) {
-        const path = this.getEventPath(event.name);
-        return this.post(path);
+    setTemperature(room, temperature) {
+        const thermostatsByRoom = {
+            bathroom: 'climate.mysa_bathroom',
+            bedroom: 'climate.mysa_bedroom',
+            game_room: 'climate.mysa_game_room',
+            guest_bathroom: 'climate.mysa_guest_bathroom',
+            guest_bedroom: 'climate.mysa_guest_bedroom',
+            living_room: 'climate.living_room_ac',
+            office: 'climate.mysa_office',
+        };
+        this.post('/services/climate/set_temperature', {
+            entity_id: thermostatsByRoom[room],
+            temperature,
+        });
     }
 }
 
-export default new IftttWebhookApi();
+export default new HomeAssistantApi();

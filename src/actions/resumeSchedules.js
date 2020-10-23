@@ -15,7 +15,7 @@ export function resumeSchedule(roomName) {
     const schedule = spreadsheetApi.getSchedulesByRoomName()[roomName];
     const mostRecentEvent = getMostRecentEvent(schedule);
     if (mostRecentEvent) {
-        setTemp(roomName, mostRecentEvent[1]);
+        setTemp(roomName, parseInt(mostRecentEvent[1]));
     }
 }
 

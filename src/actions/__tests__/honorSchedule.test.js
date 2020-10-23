@@ -18,32 +18,32 @@ describe('honorSchedule', () => {
         spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'idle'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 60),
             ]),
             bedroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'sleep'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 69),
             ]),
             bathroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 80),
             ]),
             living_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T09:00:00.000Z', 'away'),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
+                createScheduleRow('1899-12-30T09:00:00.000Z', 55),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 72),
             ]),
             game_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'away'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 55),
             ]),
             guest_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'sleep'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 69),
             ]),
             guest_bathroom: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'shower'),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 80),
             ]),
         });
         spreadsheetApi.getAway.mockReturnValue([]);
@@ -73,13 +73,13 @@ describe('honorSchedule', () => {
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to idle',
-            '* Set bedroom to sleep',
-            '* Set bathroom to shower',
-            '* Set living_room to comfort',
-            '* Set game_room to away',
-            '* Set guest_room to sleep',
-            '* Set guest_bathroom to shower',
+            '* Set office to 60F',
+            '* Set bedroom to 69F',
+            '* Set bathroom to 80F',
+            '* Set living_room to 72F',
+            '* Set game_room to 60F',
+            '* Set guest_room to 55F',
+            '* Set guest_bathroom to 80F',
             '',
         ]);
     });
@@ -89,13 +89,13 @@ describe('honorSchedule', () => {
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to away',
-            '* Set bedroom to away',
-            '* Set bathroom to away',
-            '* Set living_room to away',
-            '* Set game_room to away',
-            '* Set guest_room to away',
-            '* Set guest_bathroom to away',
+            '* Set office to 55F',
+            '* Set bedroom to 55F',
+            '* Set bathroom to 55F',
+            '* Set living_room to 55F',
+            '* Set game_room to 55F',
+            '* Set guest_room to 55F',
+            '* Set guest_bathroom to 55F',
             '',
         ]);
     });
@@ -105,13 +105,13 @@ describe('honorSchedule', () => {
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to away',
-            '* Set bedroom to away',
-            '* Set bathroom to away',
-            '* Set living_room to comfort',
-            '* Set game_room to away',
-            '* Set guest_room to sleep',
-            '* Set guest_bathroom to shower',
+            '* Set office to 55F',
+            '* Set bedroom to 55F',
+            '* Set bathroom to 55F',
+            '* Set living_room to 72F',
+            '* Set game_room to 55F',
+            '* Set guest_room to 69F',
+            '* Set guest_bathroom to 80F',
             '',
         ]);
     });
@@ -121,13 +121,13 @@ describe('honorSchedule', () => {
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to idle',
-            '* Set bedroom to sleep',
-            '* Set bathroom to shower',
-            '* Set living_room to comfort',
-            '* Set game_room to away',
-            '* Set guest_room to away',
-            '* Set guest_bathroom to away',
+            '* Set office to 60F',
+            '* Set bedroom to 69F',
+            '* Set bathroom to 80F',
+            '* Set living_room to 72F',
+            '* Set game_room to 55F',
+            '* Set guest_room to 55F',
+            '* Set guest_bathroom to 55F',
             '',
         ]);
     });
@@ -138,14 +138,14 @@ describe('honorSchedule', () => {
         spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
+                createScheduleRow('1899-12-30T09:50:00.000Z', 55),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 72),
             ]),
         });
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to comfort',
+            '* Set office to 72F',
             '',
         ]);
     });
@@ -156,14 +156,14 @@ describe('honorSchedule', () => {
         spreadsheetApi.getSchedulesByRoomName.mockReturnValue({
             office: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T09:50:00.000Z', 'away'),
-                createScheduleRow('1899-12-30T10:00:00.000Z', 'comfort'),
+                createScheduleRow('1899-12-30T09:50:00.000Z', 55),
+                createScheduleRow('1899-12-30T10:00:00.000Z', 72),
             ]),
         });
         const response = honorSchedule();
         expect(response.split('\n')).toEqual([
             'Took the following actions:',
-            '* Set office to away',
+            '* Set office to 55F',
             '',
         ]);
     });
@@ -173,20 +173,22 @@ describe('honorSchedule', () => {
                 office: createMockScheduleSheet([
                     ...getBaseScheduleValues(),
                     [
+                        // Sunday
                         '1899-12-30T10:00:00.000Z',
-                        'sundaytemp',
+                        1,
                         '1899-12-30T10:00:00.000Z',
-                        'mondaytemp',
+                        2,
                         '1899-12-30T10:00:00.000Z',
-                        'tuesdaytemp',
+                        3,
                         '1899-12-30T10:00:00.000Z',
-                        'wednesdaytemp',
+                        4,
                         '1899-12-30T10:00:00.000Z',
-                        'thursdaytemp',
+                        5,
                         '1899-12-30T10:00:00.000Z',
-                        'fridaytemp',
+                        6,
+                        // Saturday
                         '1899-12-30T10:00:00.000Z',
-                        'saturdaytemp',
+                        7,
                     ],
                 ]),
             });
@@ -198,7 +200,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to sundaytemp',
+                '* Set office to 1F',
                 '',
             ]);
         });
@@ -209,7 +211,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to mondaytemp',
+                '* Set office to 2F',
                 '',
             ]);
         });
@@ -220,7 +222,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to tuesdaytemp',
+                '* Set office to 3F',
                 '',
             ]);
         });
@@ -231,7 +233,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to wednesdaytemp',
+                '* Set office to 4F',
                 '',
             ]);
         });
@@ -242,7 +244,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to thursdaytemp',
+                '* Set office to 5F',
                 '',
             ]);
         });
@@ -253,7 +255,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to fridaytemp',
+                '* Set office to 6F',
                 '',
             ]);
         });
@@ -264,7 +266,7 @@ describe('honorSchedule', () => {
             const response = honorSchedule();
             expect(response.split('\n')).toEqual([
                 'Took the following actions:',
-                '* Set office to saturdaytemp',
+                '* Set office to 7F',
                 '',
             ]);
         });
