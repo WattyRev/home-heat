@@ -7,34 +7,34 @@ I have 2 different heating systems in my house: Mysa for in-wall forced air heat
 
 Mysa has a geo-fencing feature, but I found it to be unreliable. Even if it was reliable, it wouldn't be able to change my Sensibo.
 
-So, I wanted to make my own system for thermostat scheduling that can control both Mysa and Sensibo, and which can also be manipulated using a 3rd party Geofencing (IFTTT).
+So, I wanted to make my own system for thermostat scheduling that can control both Mysa and Sensibo, and which can also be manipulated using a 3rd party Geofencing (IFTTT + Google Wifi).
 
 ## How
 
 Architecture:
 ```
-       +-----+
-       |Timer|
-       +--+--+
-          |
-          | Run Schedule     +------------+                              +---------------+
-          +----------------->+            |     Persistent Storage       |               |
-                             | App Script +<---------------------------->+ Google Sheets |
-    +------------------------+            |     Get daily schedules      |               |
-    |    Set Thermostats     +-----^------+     Manage event logs        +---------------+
-    |                              |            Manage Away States
-    |                              |
-    |      Notify Away status      |
-+---v---+  from geofence, voice    |
-|       |  command, or other method|
-| IFTTT +--------------------------+
-|       |
-+---^---+
-    |                     +------------------+
-    |                     |                  |
-    +---------------------+ Google Assistant |
-      Manually Trigger    |                  |
-      processes via Voice +------------------+
+                       +-----+
+                       |Timer|
+                       +--+--+
+                          |
+                          | Run Schedule     +------------+                              +---------------+
+  +----------------+      +----------------->+            |     Persistent Storage       |               |
+  |                |                         | App Script +<---------------------------->+ Google Sheets |
+  | Home Assistant +<------------------------+            |     Get daily schedules      |               |
+  |                |     Set Thermostats     +-----^------+     Manage event logs        +---------------+
+  +----------------+                               |            Manage Away States
+                                                   |
+                           Notify Away status      |
+                +-------+  from Google Wifi, voice |
+                |       |  command, or other method|
+                | IFTTT +--------------------------+
+                |       |
+                +---^---+
+                    |                     +------------------+
+                    |                     |                  |
+                    +---------------------+ Google Assistant |
+                      Manually Trigger    |                  |
+                      processes via Voice +------------------+
 
 ```
 
@@ -116,6 +116,12 @@ https://docs.google.com/spreadsheets/d/1k0IFQt2_8IGewYpHcTP1sgD8xhVJWD73OFyQyhJL
 Since the App Script is just static code that gets run on a timer, it needs some way to store state (away/vacation).
 
 Google Sheets can provide that persistent storage for state and for logging. It also provides a relatively easy and robust way of managing schedules for each thermostat, so that scheduling configuration is stored here.
+
+### Home Assistant
+http://wattyha.duckdns.org:1111
+https://www.home-assistant.io/
+
+Home Assistant is a system running on a Raspberry Pi. It is connected to all my smart home devices and is a more robust way of communicating with those devices than IFTTT is. I am new to Home Assistant, and will be moving more functionality away from IFTTT and toward Home Assistant.
 
 ### IFTTT
 http://ifttt.com
