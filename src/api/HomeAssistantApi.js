@@ -3,8 +3,8 @@ import log from '../util/log';
 import { getScriptProperties } from '../globals/PropertiesService';
 
 export class HomeAssistantApi {
-    constructor() {
-        this.config = {
+    get config() {
+        return {
             /**
              * The base url for all API requests
              */

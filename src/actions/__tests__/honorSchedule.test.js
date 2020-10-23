@@ -77,8 +77,8 @@ describe('honorSchedule', () => {
             '* Set bedroom to 69F',
             '* Set bathroom to 80F',
             '* Set living_room to 72F',
-            '* Set game_room to 60F',
-            '* Set guest_room to 55F',
+            '* Set game_room to 55F',
+            '* Set guest_room to 69F',
             '* Set guest_bathroom to 80F',
             '',
         ]);
