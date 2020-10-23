@@ -24,10 +24,7 @@ describe('homeAssistantApi', () => {
             'http://wattyha.duckdns.org:1111/api/services/climate/set_temperature',
             {
                 contentType: 'application/json',
-                headers: {
-                    'Authorization': 'Bearer home_assistant_token',
-                    'Content-Type': 'application/json',
-                },
+                headers: { Authorization: 'Bearer home_assistant_token' },
                 method: 'POST',
                 payload: '{"entity_id":"climate.mysa_bathroom","temperature":73}',
             }
