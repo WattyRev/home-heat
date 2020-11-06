@@ -8,7 +8,7 @@ export class HomeAssistantApi {
             /**
              * The base url for all API requests
              */
-            baseURL: 'http://wattyha.duckdns.org:1111/api',
+            baseURL: 'https://wattyha.duckdns.org:1111/api',
             options: {
                 headers: { Authorization: `Bearer ${getScriptProperties().homeAssistantToken}` },
             },
