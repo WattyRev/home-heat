@@ -21,7 +21,7 @@ describe('homeAssistantApi', () => {
         expect.assertions(1);
         homeAssistantApi.setTemperature('bathroom', 73);
         expect(mockFetch).toHaveBeenCalledWith(
-            'http://wattyha.duckdns.org:1111/api/services/climate/set_temperature',
+            'https://wattyha.duckdns.org:1111/api/services/climate/set_temperature',
             {
                 contentType: 'application/json',
                 headers: { Authorization: 'Bearer home_assistant_token' },

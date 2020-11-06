@@ -118,7 +118,7 @@ Since the App Script is just static code that gets run on a timer, it needs some
 Google Sheets can provide that persistent storage for state and for logging. It also provides a relatively easy and robust way of managing schedules for each thermostat, so that scheduling configuration is stored here.
 
 ### Home Assistant
-http://wattyha.duckdns.org:1111
+https://wattyha.duckdns.org:1111
 https://www.home-assistant.io/
 
 Home Assistant is a system running on a Raspberry Pi. It is connected to all my smart home devices and is a more robust way of communicating with those devices than IFTTT is. I am new to Home Assistant, and will be moving more functionality away from IFTTT and toward Home Assistant.
