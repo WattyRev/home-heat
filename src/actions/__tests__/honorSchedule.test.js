@@ -30,7 +30,7 @@ describe('honorSchedule', () => {
             ]),
             living_room: createMockScheduleSheet([
                 ...getBaseScheduleValues(),
-                createScheduleRow('1899-12-30T09:00:00.000Z', 55),
+                createScheduleRow('1899-12-30T09:00:00.000Z', 'off'),
                 createScheduleRow('1899-12-30T10:00:00.000Z', 72),
             ]),
             game_room: createMockScheduleSheet([
@@ -59,6 +59,7 @@ describe('honorSchedule', () => {
             };
             return map[roomName];
         });
+        spreadsheetApi.getRoomAwayTemperature.mockReturnValue(55);
     });
     it('does not take any action if no events line up', () => {
         expect.assertions(1);
@@ -80,6 +81,16 @@ describe('honorSchedule', () => {
             '* Set game_room to 55F',
             '* Set guest_room to 69F',
             '* Set guest_bathroom to 80F',
+            '',
+        ]);
+    });
+    it('calls setTemp for each action to take including turning off climate control', () => {
+        expect.assertions(1);
+        MockDate.set('2019-11-24T09:00:00.000Z');
+        const response = honorSchedule();
+        expect(response.split('\n')).toEqual([
+            'Took the following actions:',
+            '* Set living_room to off',
             '',
         ]);
     });

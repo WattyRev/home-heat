@@ -40,4 +40,14 @@ describe('setTemp', () => {
         setTemp('bathroom', 80);
         expect(homeAssistantApi.setTemperature).toHaveBeenCalled();
     });
+    it('turns off the thermostat if temperature is null', () => {
+        expect.assertions(1);
+        setTemp('office', null);
+        expect(homeAssistantApi.turnOff).toHaveBeenCalledWith('office');
+    });
+    it('turns on the thermostat if the room has full climate control', () => {
+        expect.assertions(1);
+        setTemp('living_room', 72);
+        expect(homeAssistantApi.turnOn).toHaveBeenCalledWith('living_room');
+    });
 });

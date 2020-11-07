@@ -17,6 +17,9 @@ export function getBaseScheduleValues() {
             'Friday',
             '',
             'Saturday',
+            '',
+            'Away Temperature:',
+            '',
         ],
         [
             'Time',
@@ -148,6 +151,7 @@ export function createMockSpreadsheet(overrides = {}) {
             ['Bathroom Aliases', 'bathroom, the bathroom'],
             [],
             ['Weather Override Temp (F)', '75'],
+            ['Away Temperature', '55'],
         ],
         'Logs': [['mock logs']],
         'Office Schedule': [['mock office schedule']],

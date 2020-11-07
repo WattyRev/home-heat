@@ -22,6 +22,7 @@ describe('setAway', () => {
         spreadsheetApi.getAway.mockReturnValue([]);
         spreadsheetApi.getUsersForRoom.mockImplementation(room => roomUsersMap[room]);
         spreadsheetApi.getUsers.mockReturnValue(['spencer', 'michael']);
+        spreadsheetApi.getRoomAwayTemperature.mockReturnValue(55);
     });
     describe('isAway = true', () => {
         it('adds the user to the away list', () => {

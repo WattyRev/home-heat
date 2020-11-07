@@ -2,10 +2,17 @@ import getSpreadsheet from '../globals/Spreadsheet';
 import rooms from '../constants/rooms';
 
 class SpreadsheetApi {
+    /**
+     * Gets the logs sheet
+     * @return {Sheet}
+     */
     getLogsSheet() {
         return getSpreadsheet().getSheetByName('Logs');
     }
 
+    /**
+     * Gets the sheet for each room indexed by roomName
+     */
     getSchedulesByRoomName() {
         const spreadsheet = getSpreadsheet();
         return {
@@ -17,6 +24,21 @@ class SpreadsheetApi {
             guest_room: spreadsheet.getSheetByName('Guest Room Schedule'),
             guest_bathroom: spreadsheet.getSheetByName('Guest Bathroom Schedule'),
         };
+    }
+
+    getRoomAwayTemperature(roomName) {
+        const sheet = this.getSchedulesByRoomName()[roomName];
+        let awayTemperature = sheet.getRange(1, 16).getValue();
+        if (!awayTemperature) {
+            awayTemperature = this.getGlobalAwayTemperature();
+        }
+        return parseInt(awayTemperature) || null;
+    }
+
+    getGlobalAwayTemperature() {
+        const spreadsheet = getSpreadsheet();
+        const configSheet = spreadsheet.getSheetByName('Config');
+        return parseInt(configSheet.getRange(19, 2).getValue());
     }
 
     /**

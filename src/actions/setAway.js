@@ -21,7 +21,7 @@ export default function setAway(user, isAway) {
             const roomUsers = spreadsheetApi.getUsersForRoom(room);
             const allAway = allArrayItemsInHaystack(roomUsers, updatedAwayUsers);
             if (allAway) {
-                setTemp(room, 55);
+                setTemp(room, spreadsheetApi.getRoomAwayTemperature(room));
             }
         });
         return 'See you later!';
