@@ -3,8 +3,8 @@ import rooms from '../constants/rooms';
 import { resumeSchedule } from './resumeSchedules';
 import setTemp from './setTemp';
 import log from '../util/log';
-import allArrayItemsInHaystack from '../util/allArrayItemsInHaystack';
 import anyArrayItemsInHaystack from '../util/anyArrayItemsInHaystack';
+import awayService from '../services/awayService';
 
 export default function setAway(user, isAway) {
     // If setting away to true, set all relevant rooms to away temperature
@@ -16,11 +16,8 @@ export default function setAway(user, isAway) {
         spreadsheetApi.addAway(user);
 
         // Set all unused rooms to away
-        const updatedAwayUsers = [...awayUsers, user];
         rooms.forEach(room => {
-            const roomUsers = spreadsheetApi.getUsersForRoom(room);
-            const allAway = allArrayItemsInHaystack(roomUsers, updatedAwayUsers);
-            if (allAway) {
+            if (awayService.isEveryoneAwayFromRoom(room)) {
                 setTemp(room, spreadsheetApi.getRoomAwayTemperature(room));
             }
         });
