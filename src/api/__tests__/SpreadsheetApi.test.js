@@ -30,6 +30,93 @@ describe('SpreadsheetApi', () => {
             ]);
         });
     });
+    describe('getRoomAwayTenperature', () => {
+        beforeEach(() => {
+            getSpreadsheet.mockReturnValue(
+                createMockSpreadsheet({
+                    'Living Room Schedule': [
+                        [
+                            'Sunday',
+                            '',
+                            'Monday',
+                            '',
+                            'Tuesday',
+                            '',
+                            'Wednesday',
+                            '',
+                            'Thursday',
+                            '',
+                            'Friday',
+                            '',
+                            'Saturday',
+                            '',
+                            'Away Temperature:',
+                            '57',
+                        ],
+                    ],
+                    'Game Room Schedule': [
+                        [
+                            'Sunday',
+                            '',
+                            'Monday',
+                            '',
+                            'Tuesday',
+                            '',
+                            'Wednesday',
+                            '',
+                            'Thursday',
+                            '',
+                            'Friday',
+                            '',
+                            'Saturday',
+                            '',
+                            'Away Temperature:',
+                            'off',
+                        ],
+                    ],
+                    'Guest Room Schedule': [
+                        [
+                            'Sunday',
+                            '',
+                            'Monday',
+                            '',
+                            'Tuesday',
+                            '',
+                            'Wednesday',
+                            '',
+                            'Thursday',
+                            '',
+                            'Friday',
+                            '',
+                            'Saturday',
+                            '',
+                            'Away Temperature:',
+                            '',
+                        ],
+                    ],
+                })
+            );
+        });
+        it('returns the away temperature for a room', () => {
+            expect.assertions(1);
+            expect(api.getRoomAwayTemperature('living_room')).toEqual(57);
+        });
+        it('returns null if the away temperature is set to off', () => {
+            expect.assertions(1);
+            expect(api.getRoomAwayTemperature('game_room')).toBeNull();
+        });
+        it('returns the global away temperature if there is no room away temperature', () => {
+            expect.assertions(1);
+            expect(api.getRoomAwayTemperature('guest_room')).toEqual(55);
+        });
+    });
+    describe('getGlobalAwayTemperature', () => {
+        it('returns the global away temperature', () => {
+            expect.assertions(1);
+            const response = api.getGlobalAwayTemperature();
+            expect(response).toEqual(55);
+        });
+    });
     describe('getRoomAliases', () => {
         it('gets all the room aliases from the Config sheet', () => {
             expect.assertions(1);

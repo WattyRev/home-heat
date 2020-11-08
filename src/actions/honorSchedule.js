@@ -35,7 +35,9 @@ export default function honorSchedule() {
     // Report on actions taken
     const message = actions.reduce(
         (builtMessage, action) =>
-            `${builtMessage}* Set ${action.roomName} to ${action.temperature}F\n`,
+            `${builtMessage}* Set ${action.roomName} to ${
+                action.temperature === null ? 'off' : `${action.temperature}F`
+            }\n`,
         'Took the following actions:\n'
     );
     return message;
@@ -95,7 +97,12 @@ export function determineActions(dayIndex, hours, minutes) {
             const users = spreadsheetApi.getUsersForRoom(roomName);
             const awayUsers = spreadsheetApi.getAway();
             const allAway = allArrayItemsInHaystack(users, awayUsers);
-            const temperature = allAway ? 55 : parseInt(relevantRow[1]);
+            let temperature;
+            if (allAway) {
+                temperature = spreadsheetApi.getRoomAwayTemperature(roomName);
+            } else {
+                temperature = parseInt(relevantRow[1]) || null;
+            }
 
             accumulatedActions.push({
                 roomName,
