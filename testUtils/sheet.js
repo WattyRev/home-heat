@@ -18,6 +18,7 @@ export function getBaseScheduleValues() {
             '',
             'Saturday',
             '',
+            '',
             'Away Temperature:',
             '',
         ],

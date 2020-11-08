@@ -30,7 +30,7 @@ describe('SpreadsheetApi', () => {
             ]);
         });
     });
-    describe('getRoomAwayTenperature', () => {
+    describe('getRoomAwayTemperature', () => {
         beforeEach(() => {
             getSpreadsheet.mockReturnValue(
                 createMockSpreadsheet({
@@ -49,6 +49,7 @@ describe('SpreadsheetApi', () => {
                             'Friday',
                             '',
                             'Saturday',
+                            '',
                             '',
                             'Away Temperature:',
                             '57',
@@ -70,6 +71,7 @@ describe('SpreadsheetApi', () => {
                             '',
                             'Saturday',
                             '',
+                            '',
                             'Away Temperature:',
                             'off',
                         ],
@@ -89,6 +91,7 @@ describe('SpreadsheetApi', () => {
                             'Friday',
                             '',
                             'Saturday',
+                            '',
                             '',
                             'Away Temperature:',
                             '',
