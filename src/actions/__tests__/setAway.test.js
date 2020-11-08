@@ -1,4 +1,5 @@
 import spreadsheetApi from '../../api/SpreadsheetApi';
+import awayService from '../../services/awayService';
 import { resumeSchedule } from '../resumeSchedules';
 import setTemp from '../setTemp';
 import setAway from '../setAway';
@@ -7,9 +8,12 @@ jest.mock('../../api/SpreadsheetApi');
 jest.mock('../setTemp');
 jest.mock('../resumeSchedules');
 jest.mock('../../util/log');
+jest.mock('../../services/awayService');
 
 describe('setAway', () => {
     beforeEach(() => {
+        spreadsheetApi.getAway.mockReturnValue([]);
+        spreadsheetApi.getUsers.mockReturnValue(['spencer', 'michael']);
         const roomUsersMap = {
             office: ['spencer'],
             bedroom: ['spencer'],
@@ -19,10 +23,9 @@ describe('setAway', () => {
             living_room: ['spencer', 'michael'],
             game_room: ['spencer', 'michael'],
         };
-        spreadsheetApi.getAway.mockReturnValue([]);
         spreadsheetApi.getUsersForRoom.mockImplementation(room => roomUsersMap[room]);
-        spreadsheetApi.getUsers.mockReturnValue(['spencer', 'michael']);
         spreadsheetApi.getRoomAwayTemperature.mockReturnValue(55);
+        awayService.isEveryoneAwayFromRoom.mockReturnValue(false);
     });
     describe('isAway = true', () => {
         it('adds the user to the away list', () => {
@@ -30,8 +33,20 @@ describe('setAway', () => {
             setAway('spencer', true);
             expect(spreadsheetApi.addAway).toHaveBeenCalledWith('spencer');
         });
-        it('only sets rooms that the user uses to away', () => {
+        it('sets empty rooms to away', () => {
             expect.assertions(7);
+            awayService.isEveryoneAwayFromRoom.mockImplementation(roomName => {
+                const awayByRoom = {
+                    bathroom: true,
+                    bedroom: true,
+                    game_room: false,
+                    guest_bathroom: false,
+                    guest_room: false,
+                    living_room: false,
+                    office: true,
+                };
+                return awayByRoom[roomName];
+            });
             setAway('spencer', true);
             expect(setTemp).toHaveBeenCalledWith('office', 55);
             expect(setTemp).toHaveBeenCalledWith('bedroom', 55);
@@ -40,13 +55,6 @@ describe('setAway', () => {
             expect(setTemp).not.toHaveBeenCalledWith('game_room', 55);
             expect(setTemp).not.toHaveBeenCalledWith('guest_room', 55);
             expect(setTemp).not.toHaveBeenCalledWith('guest_bathroom', 55);
-        });
-        it('it sets shared rooms to away if all the room users are now away', () => {
-            expect.assertions(2);
-            spreadsheetApi.getAway.mockReturnValue(['michael']);
-            setAway('spencer', true);
-            expect(setTemp).toHaveBeenCalledWith('living_room', 55);
-            expect(setTemp).toHaveBeenCalledWith('game_room', 55);
         });
     });
     describe('isAway = false', () => {

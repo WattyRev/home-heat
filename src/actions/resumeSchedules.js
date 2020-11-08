@@ -2,6 +2,7 @@ import moment from 'moment';
 import spreadsheetApi from '../api/SpreadsheetApi';
 import rooms from '../constants/rooms';
 import roundToNearestTenMinutes from '../util/roundToNearestTenMinutes';
+import awayService from '../services/awayService';
 import log from '../util/log';
 import setTemp from './setTemp';
 
@@ -11,6 +12,10 @@ export default function resumeSchedules() {
 }
 
 export function resumeSchedule(roomName) {
+    if (awayService.isEveryoneAwayFromRoom(roomName)) {
+        setTemp(roomName, spreadsheetApi.getRoomAwayTemperature(roomName));
+        return;
+    }
     // Get the schedule
     const schedule = spreadsheetApi.getSchedulesByRoomName()[roomName];
     const mostRecentEvent = getMostRecentEvent(schedule);

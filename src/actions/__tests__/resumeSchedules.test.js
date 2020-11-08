@@ -7,9 +7,11 @@ import {
     getBaseScheduleValues,
     createScheduleRow,
 } from '../../../testUtils/sheet';
+import awayService from '../../services/awayService';
 
 jest.mock('../setTemp');
 jest.mock('../../api/SpreadsheetApi');
+jest.mock('../../services/awayService');
 
 describe('resumeShedule', () => {
     beforeEach(() => {
@@ -21,6 +23,8 @@ describe('resumeShedule', () => {
                 createScheduleRow('', '', '', '', '1899-12-30T12:00:00.000Z', 60),
             ]),
         });
+        spreadsheetApi.getRoomAwayTemperature.mockReturnValue(55);
+        awayService.isEveryoneAwayFromRoom.mockReturnValue(false);
     });
     it('sets the temperature based on the most recent event from today', () => {
         expect.assertions(1);
@@ -50,5 +54,11 @@ describe('resumeShedule', () => {
         });
         resumeSchedule('office');
         expect(setTemp).not.toHaveBeenCalled();
+    });
+    it('sets the away temperature for empty rooms', () => {
+        expect.assertions(1);
+        awayService.isEveryoneAwayFromRoom.mockReturnValue(true);
+        resumeSchedule('office');
+        expect(setTemp).toHaveBeenCalledWith('office', 55);
     });
 });
