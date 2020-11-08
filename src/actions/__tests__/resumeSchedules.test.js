@@ -55,7 +55,7 @@ describe('resumeShedule', () => {
         resumeSchedule('office');
         expect(setTemp).not.toHaveBeenCalled();
     });
-    it('sets the away temperatyre for empty rooms', () => {
+    it('sets the away temperature for empty rooms', () => {
         expect.assertions(1);
         awayService.isEveryoneAwayFromRoom.mockReturnValue(true);
         resumeSchedule('office');
