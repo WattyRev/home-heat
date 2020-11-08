@@ -28,7 +28,7 @@ class SpreadsheetApi {
 
     getRoomAwayTemperature(roomName) {
         const sheet = this.getSchedulesByRoomName()[roomName];
-        let awayTemperature = sheet.getRange(1, 16).getValue();
+        let awayTemperature = sheet.getRange(1, 17).getValue();
         if (!awayTemperature) {
             awayTemperature = this.getGlobalAwayTemperature();
         }
