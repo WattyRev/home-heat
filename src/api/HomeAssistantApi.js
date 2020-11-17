@@ -25,7 +25,7 @@ export class HomeAssistantApi {
             bedroom: 'climate.mysa_bedroom',
             game_room: 'climate.mysa_game_room',
             guest_bathroom: 'climate.mysa_guest_bathroom',
-            guest_room: 'climate.mysa_guest_bedroom',
+            guest_room: 'climate.mysa_guest_room',
             living_room: 'climate.living_room_ac',
             office: 'climate.mysa_office',
         };
