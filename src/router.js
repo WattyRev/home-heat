@@ -21,7 +21,7 @@ export default function route(request, method) {
             case 'away':
                 return setAway(request.payload.name, request.payload.away);
             case 'redriveSchedule':
-                return resumeSchedules();
+                return resumeSchedules(request.payload.rooms);
             case 'hold':
                 return hold(request.payload.room);
             case 'stopHold':
