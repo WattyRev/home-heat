@@ -6,8 +6,13 @@ import awayService from '../services/awayService';
 import log from '../util/log';
 import setTemp from './setTemp';
 
-export default function resumeSchedules() {
-    log('Resuming schedules');
+export default function resumeSchedules(requestedRooms = []) {
+    if (requestedRooms.length) {
+        log(`Resuming schedules for ${requestedRooms.join(', ')}`);
+        requestedRooms.forEach(room => resumeSchedule(room));
+        return;
+    }
+    log('Resuming schedules for all rooms');
     rooms.forEach(room => resumeSchedule(room));
 }
 

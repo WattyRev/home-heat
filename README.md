@@ -80,7 +80,8 @@ Make all thermostats resume their schedules.
 with payload
 ```json
 {
-    "passcode": "secretString"
+    "passcode": "secretString",
+    "rooms": ["office"]
 }
 ```
 
