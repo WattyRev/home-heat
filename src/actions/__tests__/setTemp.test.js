@@ -12,7 +12,6 @@ describe('setTemp', () => {
     beforeEach(() => {
         spreadsheetApi.getHold.mockReturnValue([]);
         spreadsheetApi.getWeatherOverrideTemp.mockReturnValue(75);
-        spreadsheetApi.getMinimumComfortTemp.mockReturnValue(68);
     });
     it('sets the temperature through Home Assistant', () => {
         expect.assertions(1);
