@@ -45,9 +45,4 @@ describe('setTemp', () => {
         setTemp('office', null);
         expect(homeAssistantApi.turnOff).toHaveBeenCalledWith('office');
     });
-    it('turns on the thermostat if the room has full climate control', () => {
-        expect.assertions(1);
-        setTemp('living_room', 72);
-        expect(homeAssistantApi.turnOn).toHaveBeenCalledWith('living_room');
-    });
 });

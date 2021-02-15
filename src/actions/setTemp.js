@@ -1,6 +1,6 @@
 import weatherApi from '../api/WeatherApi';
 import homeAssistantApi from '../api/HomeAssistantApi';
-import rooms, { fullClimateRooms } from '../constants/rooms';
+import rooms from '../constants/rooms';
 import spreadsheetApi from '../api/SpreadsheetApi';
 import log from '../util/log';
 
@@ -31,12 +31,6 @@ export default function setTemp(roomName, temperature) {
     if (temperature === null) {
         homeAssistantApi.turnOff(roomName);
         return;
-    }
-
-    // Action
-    // Full climate rooms may need to be turned on before setting a temperature
-    if (fullClimateRooms.includes(roomName)) {
-        homeAssistantApi.turnOn(roomName);
     }
     homeAssistantApi.setTemperature(roomName, temperature);
 }

@@ -266,6 +266,15 @@ class SpreadsheetApi {
         const cell = statusSheet.getRange(18, 2);
         return parseInt(cell.getValue());
     }
+
+    /** Get the Minimum Comfort Temp setting from Config */
+    getMinimumComfortTemp() {
+        const spreadsheet = getSpreadsheet();
+        const statusSheet = spreadsheet.getSheetByName('Config');
+        // Cell 20B
+        const cell = statusSheet.getRange(20, 2);
+        return parseInt(cell.getValue());
+    }
 }
 
 export default new SpreadsheetApi();

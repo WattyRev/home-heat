@@ -1,6 +1,8 @@
 import getUrlFetchApp from '../globals/UrlFetchApp';
 import log from '../util/log';
+import { fullClimateRooms } from '../constants/rooms';
 import { getScriptProperties } from '../globals/PropertiesService';
+import spreadsheetApi from './SpreadsheetApi';
 
 /**
  * Logic for communicating with Home Assistant
@@ -60,10 +62,22 @@ export class HomeAssistantApi {
      * @param {Number} temperature The temperature (F) to set the room to
      */
     setTemperature(room, temperature) {
-        this.post('/services/climate/set_temperature', {
+        const payload = {
             entity_id: this.thermostatsByRoom[room],
-            temperature,
-        });
+        };
+        if (fullClimateRooms.includes(room)) {
+            if (temperature < spreadsheetApi.getMinimumComfortTemp()) {
+                payload.hvac_mode = 'heat';
+                payload.temperature = temperature;
+            } else {
+                payload.hvac_mode = 'heat_cool';
+                payload.target_temp_high = temperature + 1;
+                payload.target_temp_low = temperature - 1;
+            }
+        } else {
+            payload.temperature = temperature;
+        }
+        this.post('/services/climate/set_temperature', payload);
     }
 
     /**
@@ -72,16 +86,6 @@ export class HomeAssistantApi {
      */
     turnOff(room) {
         this.post('/services/climate/turn_off', {
-            entity_id: this.thermostatsByRoom[room],
-        });
-    }
-
-    /**
-     * Turns on climate control in a room
-     * @param  {String} room The room to turn on
-     */
-    turnOn(room) {
-        this.post('/services/climate/turn_on', {
             entity_id: this.thermostatsByRoom[room],
         });
     }
