@@ -246,4 +246,11 @@ describe('SpreadsheetApi', () => {
             expect(response).toEqual(75);
         });
     });
+    describe('getMinimumComfortTemp', () => {
+        it('returns the set minimum comfort temperature as an integer', () => {
+            expect.assertions(1);
+            const response = api.getMinimumComfortTemp();
+            expect(response).toEqual(68);
+        });
+    });
 });

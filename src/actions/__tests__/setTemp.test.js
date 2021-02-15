@@ -12,6 +12,7 @@ describe('setTemp', () => {
     beforeEach(() => {
         spreadsheetApi.getHold.mockReturnValue([]);
         spreadsheetApi.getWeatherOverrideTemp.mockReturnValue(75);
+        spreadsheetApi.getMinimumComfortTemp.mockReturnValue(68);
     });
     it('sets the temperature through Home Assistant', () => {
         expect.assertions(1);
@@ -44,10 +45,5 @@ describe('setTemp', () => {
         expect.assertions(1);
         setTemp('office', null);
         expect(homeAssistantApi.turnOff).toHaveBeenCalledWith('office');
-    });
-    it('turns on the thermostat if the room has full climate control', () => {
-        expect.assertions(1);
-        setTemp('living_room', 72);
-        expect(homeAssistantApi.turnOn).toHaveBeenCalledWith('living_room');
     });
 });
