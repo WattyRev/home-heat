@@ -17,7 +17,6 @@ export class HomeAssistantApi {
             options: {
                 headers: { Authorization: `Bearer ${getScriptProperties().homeAssistantToken}` },
             },
-            // AKfycbyDyNEh4GhdCyGwZqqlT8bvdXzM1R1UjjIoH_fjWihC5AaYhSMmuteHttpExceptions: true,
         };
     }
 
