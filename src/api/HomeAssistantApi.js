@@ -64,20 +64,30 @@ export class HomeAssistantApi {
     setTemperature(room, temperature) {
         const payload = {
             entity_id: this.thermostatsByRoom[room],
+            temperature,
         };
-        if (fullClimateRooms.includes(room)) {
-            if (temperature < spreadsheetApi.getMinimumComfortTemp()) {
-                payload.hvac_mode = 'heat';
-                payload.temperature = temperature;
-            } else {
-                payload.hvac_mode = 'heat_cool';
-                payload.target_temp_high = temperature + 1;
-                payload.target_temp_low = temperature - 1;
-            }
-        } else {
-            payload.temperature = temperature;
-        }
         this.post('/services/climate/set_temperature', payload);
+        this.setHvacMode(room, temperature);
+    }
+
+    /**
+     * Sets the hvac mode of the room based on the provided tmperature
+     * @param {String} room The name of a room
+     * @param {Number} temperature The temperature that the room is being set to
+     */
+    setHvacMode(room, temperature) {
+        const payload = {
+            entity_id: this.thermostatsByRoom[room],
+        };
+        if (!fullClimateRooms.includes(room)) {
+            return;
+        }
+        if (temperature < spreadsheetApi.getMinimumComfortTemp()) {
+            payload.hvac_mode = 'heat';
+        } else {
+            payload.hvac_mode = 'heat_cool';
+        }
+        this.post('/services/climate/set_hvac_mode', payload);
     }
 
     /**
