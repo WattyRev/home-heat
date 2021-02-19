@@ -67,6 +67,12 @@ export class HomeAssistantApi {
             temperature,
         };
         this.post('/services/climate/set_temperature', payload);
+
+        /*
+         * NOTE, I should be able to set hvac mode via the set_temperature
+         * service, but that doesn't seem to work. So, I set the hvac mode
+         * explicitely.
+         */
         this.setHvacMode(room, temperature);
     }
 
