@@ -49,6 +49,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   }
 }
